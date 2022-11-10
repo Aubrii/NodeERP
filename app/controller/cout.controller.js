@@ -1,5 +1,6 @@
 const db = require("../models");
 const Cout = db.cout;
+
 const Op = db.Sequelize.Op;
 
 // Creer et enregistre un nouveau Cout

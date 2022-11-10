@@ -22,6 +22,25 @@ db.sequelize = sequelize;
 db.ouvrage = require("./ouvrage.model")(sequelize,Sequelize)
 db.cout = require("./cout.model")(sequelize, Sequelize);
 
+//test de table relationnel
+// db.ouvrageCout = require("./ouvrageCout.model")(sequelize,Sequelize);
+// db.ouvrageCout.hasMany(db.cout, {as:"cout"})
+// db.ouvrageCout.hasMany(db.ouvrage, {as:"ouvrage"})
+
+db.ouvrage.belongsToMany(db.cout,
+    {through: 'ouvrageCout',
+    as:"cout",
+    foreignKey:"ouvrage_id"});
+// db.cout.belongsToMany(db.ouvrage, {through: 'ouvrageCout'});
+db.cout.belongsToMany(db.ouvrage,
+    {through: 'ouvrageCout',
+        as:"ouvrage",
+        foreignKey:"cout_id"
+
+    });
+
+
+
 // db.ouvrage.hasMany(db.cout, { as: "cout" });
 // db.cout.belongsTo(db.ouvrage, {
 //     foreignKey: "ouvrageId",
