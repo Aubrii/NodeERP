@@ -1,3 +1,5 @@
+
+//Création d'un model de données d'un cout
 module.exports = (sequelize, Sequelize) => {
     const Cout = sequelize.define("cout", {
         type: {

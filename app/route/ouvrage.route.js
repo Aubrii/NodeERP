@@ -23,6 +23,8 @@ module.exports = app => {
     router.delete("/", ouvrage.deleteAll);
 
     router.get("/add/:coutId/:ouvrageId", ouvrage.addOuvrage)
+    router.get("/test/sum/:id", ouvrage.getSum)
+
 
     app.use('/api/ouvrage', router);
 };

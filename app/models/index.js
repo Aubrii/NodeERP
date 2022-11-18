@@ -1,6 +1,7 @@
 const dbConfig = require("../config/db.config");
 
 const Sequelize = require("sequelize");
+//connexion a la base de données grace au fichier db.config
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
@@ -19,32 +20,25 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+//utilisation des differents models de données
 db.ouvrage = require("./ouvrage.model")(sequelize,Sequelize)
 db.cout = require("./cout.model")(sequelize, Sequelize);
 
-//test de table relationnel
-// db.ouvrageCout = require("./ouvrageCout.model")(sequelize,Sequelize);
-// db.ouvrageCout.hasMany(db.cout, {as:"cout"})
-// db.ouvrageCout.hasMany(db.ouvrage, {as:"ouvrage"})
 
+//Relation many to many
+// //Création d'une table de relation entre "ouvrage" et "cout"
 db.ouvrage.belongsToMany(db.cout,
     {through: 'ouvrageCout',
     as:"cout",
     foreignKey:"ouvrage_id"});
-// db.cout.belongsToMany(db.ouvrage, {through: 'ouvrageCout'});
+
 db.cout.belongsToMany(db.ouvrage,
     {through: 'ouvrageCout',
         as:"ouvrage",
         foreignKey:"cout_id"
-
     });
 
 
 
-// db.ouvrage.hasMany(db.cout, { as: "cout" });
-// db.cout.belongsTo(db.ouvrage, {
-//     foreignKey: "ouvrageId",
-//     as: "ouvrage",
-// });
 
 module.exports = db;

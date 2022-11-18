@@ -1,3 +1,5 @@
+
+//Création du model de données d'un ouvrage
 module.exports = (sequelize, Sequelize) => {
     const Ouvrage = sequelize.define("ouvrage", {
         designation: {
