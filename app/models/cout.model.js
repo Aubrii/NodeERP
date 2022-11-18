@@ -1,31 +1,36 @@
+const { DataTypes } = require('sequelize');
+
+module.exports = model;
 
 //Création d'un model de données d'un cout
-module.exports = (sequelize, Sequelize) => {
-    const Cout = sequelize.define("cout", {
+function model(sequelize){
+    const attributes = {
         type: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         categorie: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         designation: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         unite: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         prixUnitaire: {
-            type: Sequelize.FLOAT
+            type: DataTypes.FLOAT
         },
         fournisseur: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: true
         },
         remarque: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: true
-        }
-    });
+        },
 
-    return Cout;
-};
+
+    };
+
+    return  sequelize.define('Cout', attributes );
+}

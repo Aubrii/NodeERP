@@ -1,30 +1,34 @@
+const { DataTypes } = require('sequelize');
+
+
+module.exports = model;
 
 //Création du model de données d'un ouvrage
-module.exports = (sequelize, Sequelize) => {
-    const Ouvrage = sequelize.define("ouvrage", {
+function model(sequelize){
+    const attributes = {
         designation: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         benefice: {
-            type: Sequelize.STRING
+            type: DataTypes.INTEGER
         },
         aleas: {
-            type: Sequelize.STRING
+            type: DataTypes.INTEGER
         },
         unite: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         ratio: {
-            type: Sequelize.FLOAT
+            type: DataTypes.FLOAT
         },
         uRatio: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         fournisseur: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: true
         }
-    });
+    };
 
-    return Ouvrage;
+    return sequelize.define('Ouvrage', attributes );
 };
