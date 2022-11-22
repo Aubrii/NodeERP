@@ -3,6 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const clientService = require('../Service/client.service')
+const authorize = require('../_middleware/authorize')
 
 // routes
 

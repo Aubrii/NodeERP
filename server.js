@@ -22,7 +22,8 @@ app.use('/ouvrages', require('./app/controller/ouvrage.controller'))
 app.use('/devis', require('./app/controller/devis.controller'))
 app.use('/couts',require('./app/controller/cout.controller'));
 app.use('/clients',require('./app/controller/client.controller'));
-
+app.use('/userDevis',require('./app/controller/userDevis.controller'));
+app.use('/admin',require('./app/controller/superAdmin.controller'))
 
 
 // app.use('/ouvrage', require('./app/controller/ouvrage.controller'));

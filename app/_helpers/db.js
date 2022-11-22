@@ -1,4 +1,4 @@
-const config = require('../config/db.config');
+const config = require('../db.config.json');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 module.exports = db = {};
@@ -14,7 +14,7 @@ async function initialize() {
     // connect to db
     const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
 
-    //
+
     // sequelize.sync({ force: true }).then(() => {
     //     console.log("Suppression et synchronisation des tables.");
     // });
@@ -29,7 +29,8 @@ async function initialize() {
     db.Cout = require("../models/cout.model")(sequelize);
     db.Devis = require('../models/devis.model')(sequelize);
     db.Client = require('../models/client.model')(sequelize);
-
+    db.UserDevis = require('../models/userDevis.model')(sequelize);
+    db.SuperAdmin = require('../models/SuperAdmin.model')(sequelize)
     // db.SuperAdmin = require('../models/superadmin.model')(sequelize)
 
 
@@ -54,8 +55,8 @@ async function initialize() {
         foreignKey: "EntrepriseId",
         as: "entreprise",
     });
-    // Relation between Client and Devis => One to many
 
+    // Relation between Client and Devis => One to many
     db.Client.hasMany(db.Devis, { as: "devis" });
     db.Devis.belongsTo(db.Client, {
         foreignKey: "ClientId",
@@ -81,6 +82,11 @@ async function initialize() {
             as:"ouvrage",
             foreignKey:"cout_id"
         });
+
+    //Relation between Devis and User  => Many to many
+
+    db.Devis.belongsToMany(db.User,{through: db.UserDevis});
+    db.User.belongsToMany(db.Devis,{through:db.UserDevis});
 
 
 
