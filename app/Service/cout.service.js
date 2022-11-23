@@ -9,17 +9,21 @@ module.exports = {
     delete: _delete
 };
 
-async function getAll() {
-    return await db.Cout.findAll();
+async function getAll(params) {
+    return await db.Cout.findAll({
+        where:{
+            EntrepriseId : params
+        }
+    });
 }
 
-async function getById(id) {
-    return await getCout(id);
+async function getById(id, params) {
+    return await getCout(id, params);
 }
 
 
 async function update(id, params) {
-    const cout = await getCout(id);
+    const cout = await getCout(id, params);
 
     // validate
     const coutchanged = params.designation && cout.designation !== params.designation;
@@ -37,8 +41,15 @@ async function _delete(id) {
     await cout.destroy();
 }
 
-async function getCout(id) {
-    const cout = await db.Cout.findByPk(id);
+async function getCout(id,params) {
+    console.log(id)
+    console.log(params)
+    const cout = await db.Cout.findOne({
+        where:{
+            EntrepriseId: params,
+            id:id
+        }
+    });
     if (!cout) throw 'cout Inconnue';
     return cout;
 }
@@ -49,6 +60,7 @@ async function create(params) {
     if (await db.Cout.findOne({ where: { designation: params.designation } })) {
         throw 'designation "' + params.designation + '" est deja enregistrer';
     }
+
     const cout = new db.Cout(params);
 
     // save client

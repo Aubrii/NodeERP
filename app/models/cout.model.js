@@ -5,6 +5,11 @@ module.exports = model;
 //Création d'un model de données d'un cout
 function model(sequelize){
     const attributes = {
+        id : {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
         type: {
             type: DataTypes.STRING
         },
@@ -28,6 +33,9 @@ function model(sequelize){
             type: DataTypes.STRING,
             allowNull: true
         },
+        EntrepriseId:{
+            type: DataTypes.INTEGER
+        }
 
 
     };

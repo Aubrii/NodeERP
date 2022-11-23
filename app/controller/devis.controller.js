@@ -7,7 +7,7 @@ const {DataTypes} = require("sequelize");
 
 // routes
 
-router.get('/',  getAll);
+router.get('/',  getAll,);
 router.get('/:id', getDevisByClient);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
@@ -62,22 +62,16 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        name:Joi.string().empty(''),
-        status: Joi.string().empty(''),
-        EntrepriseId: Joi.string().empty(''),
-        ClientId: Joi.string().empty(''),
-
-
+        name: Joi.string(), allowNull: false,
+        status: Joi.string()
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        name:Joi.string().empty(''),
-        status: Joi.string().empty(''),
-
-
+        name: Joi.string(), allowNull: false,
+        status: Joi.string()
     })
     validateRequest(req, next, schema);
 }

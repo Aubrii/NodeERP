@@ -1,4 +1,4 @@
-const config = require('../db.config.json');
+const config = require('../config/db.config');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 module.exports = db = {};
@@ -14,7 +14,7 @@ async function initialize() {
     // connect to db
     const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
 
-
+    //
     // sequelize.sync({ force: true }).then(() => {
     //     console.log("Suppression et synchronisation des tables.");
     // });
@@ -31,6 +31,14 @@ async function initialize() {
     db.Client = require('../models/client.model')(sequelize);
     db.UserDevis = require('../models/userDevis.model')(sequelize);
     db.SuperAdmin = require('../models/SuperAdmin.model')(sequelize)
+    db.OuvrageCout = require('../models/ouvrageCout.model')(sequelize);
+    db.TypeCout = require('../models/typeCouts.model')(sequelize);
+    db.SousLot = require('../models/sousLot.model')(sequelize);
+    db.SousLotOuvrage = require('../models/sousLotOuvrage.model')(sequelize);
+    db.Lot = require('../models/lot.model')(sequelize);
+
+
+
     // db.SuperAdmin = require('../models/superadmin.model')(sequelize)
 
 
@@ -55,8 +63,8 @@ async function initialize() {
         foreignKey: "EntrepriseId",
         as: "entreprise",
     });
-
     // Relation between Client and Devis => One to many
+
     db.Client.hasMany(db.Devis, { as: "devis" });
     db.Devis.belongsTo(db.Client, {
         foreignKey: "ClientId",
@@ -73,22 +81,30 @@ async function initialize() {
 
     // Relation between Ouvrage and Cout => Many to many
     db.Ouvrage.belongsToMany(db.Cout,
-        {through: 'ouvrageCout',
-            as:"cout",
-            foreignKey:"ouvrage_id"});
-
+        {through: db.OuvrageCout});
     db.Cout.belongsToMany(db.Ouvrage,
-        {through: 'ouvrageCout',
-            as:"ouvrage",
-            foreignKey:"cout_id"
-        });
+        {through: db.OuvrageCout});
 
+    db.Cout.hasMany(db.TypeCout, { as: "cout" });
+    db.TypeCout.belongsTo(db.Cout, {
+        foreignKey: "CoutId",
+        as: "cout",
+    });
+
+// Relation between Ouvrage and SousLot => Many to many
+    db.Ouvrage.belongsToMany(db.SousLot, {through: db.SousLotOuvrage});
+    db.SousLot.belongsToMany(db.Ouvrage, {through: db.SousLotOuvrage});
     //Relation between Devis and User  => Many to many
 
     db.Devis.belongsToMany(db.User,{through: db.UserDevis});
     db.User.belongsToMany(db.Devis,{through:db.UserDevis});
 
 
+    db.Lot.hasMany(db.SousLot);
+    db.SousLot.belongsTo(db.Lot, {foreignKey: "LotId"});
+
+    db.Devis.hasMany(db.Lot);
+    db.Lot.belongsTo(db.Devis, {foreignKey: "DeviId"});
 
     // sync all models with database
     await sequelize.sync({ alter: true });
