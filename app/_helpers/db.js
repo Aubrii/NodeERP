@@ -1,4 +1,4 @@
-const config = require('../config/db.config');
+const config = require('../db.config.json');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 module.exports = db = {};
@@ -86,11 +86,6 @@ async function initialize() {
     db.Cout.belongsToMany(db.Ouvrage,
         {through: db.OuvrageCout});
 
-    // Relation between Ouvrage and Cout => Many to many
-    // db.Ouvrage.belongsToMany(db.Cout,
-    //     {through: db.OuvrageCout});
-    // db.Cout.belongsToMany(db.Ouvrage,
-    //     {through: db.OuvrageCout});
 
     db.Cout.hasMany(db.TypeCout, { as: "cout" });
     db.TypeCout.belongsTo(db.Cout, {

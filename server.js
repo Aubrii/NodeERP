@@ -40,19 +40,13 @@ const PORT = process.env.PORT || 8080;
 // require("./app/route/ouvrage.route")(app);
 
 app.use('/users', require('./app/controller/user.controller'));
-<<<<<<<<< Temporary merge branch 1
-app.use('/entreprises', require('./app/controller/entreprise.controller'))
 app.use('/ouvrages', require('./app/controller/ouvrage.controller'))
 app.use('/devis', require('./app/controller/devis.controller'))
 app.use('/couts',require('./app/controller/cout.controller'));
-app.use('/clients',require('./app/controller/client.controller'));
 app.use('/userDevis',require('./app/controller/userDevis.controller'));
 app.use('/admin',require('./app/controller/superAdmin.controller'))
 app.use('/clients', require('./app/controller/client.controller'));
 app.use('/entreprises', require('./app/controller/entreprise.controller'));
-app.use('/couts', require('./app/controller/cout.controller'));
-app.use('/ouvrages', require('./app/controller/ouvrage.controller'));
-app.use('/devis', require('./app/controller/devis.controller'));
 app.use('/ouvragesCouts', require('./app/controller/ouvrageCout.controller'));
 app.use('/typeCouts', require('./app/controller/typeCout.controller'));
 app.use('/sousLots', require('./app/controller/sousLot.controller'));
@@ -63,7 +57,6 @@ app.listen(PORT, () => {
     console.log(`Serveur ecoute sur le port: ${PORT}.`);
 });
 
->>>>>>>>> Temporary merge branch 2
 
 
 // global error handler
