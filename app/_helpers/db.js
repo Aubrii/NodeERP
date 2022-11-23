@@ -77,11 +77,11 @@ async function initialize() {
     });
 
 
-    // Relation between Ouvrage and Cout => Many to many
-    db.Ouvrage.belongsToMany(db.Cout,
-        {through: db.OuvrageCout});
-    db.Cout.belongsToMany(db.Ouvrage,
-        {through: db.OuvrageCout});
+    //// Relation between Ouvrage and Cout => Many to many
+   // db.Ouvrage.belongsToMany(db.Cout,
+     //   {through: db.OuvrageCout});
+    //db.Cout.belongsToMany(db.Ouvrage,
+      //  {through: db.OuvrageCout});
 
     db.Cout.hasMany(db.TypeCout, { as: "cout" });
     db.TypeCout.belongsTo(db.Cout, {
