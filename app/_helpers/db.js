@@ -29,6 +29,13 @@ async function initialize() {
     db.Cout = require("../models/cout.model")(sequelize);
     db.Devis = require('../models/devis.model')(sequelize);
     db.Client = require('../models/client.model')(sequelize);
+    db.OuvrageCout = require('../models/ouvrageCout.model')(sequelize);
+    db.TypeCout = require('../models/typeCouts.model')(sequelize);
+    db.SousLot = require('../models/sousLot.model')(sequelize);
+    db.SousLotOuvrage = require('../models/sousLotOuvrage.model')(sequelize);
+    db.Lot = require('../models/lot.model')(sequelize);
+
+
 
     // db.SuperAdmin = require('../models/superadmin.model')(sequelize)
 
@@ -42,7 +49,7 @@ async function initialize() {
 
 
     // Relation between Entreprise and Cout => One to many
-    db.Entreprise.hasMany(db.Cout, { as: "Cout" });
+    db.Entreprise.hasMany(db.Cout, { as: "couts" });
     db.Cout.belongsTo(db.Entreprise, {
         foreignKey: "EntrepriseId",
         as: "entreprise",
@@ -72,17 +79,25 @@ async function initialize() {
 
     // Relation between Ouvrage and Cout => Many to many
     db.Ouvrage.belongsToMany(db.Cout,
-        {through: 'ouvrageCout',
-            as:"cout",
-            foreignKey:"ouvrage_id"});
-
+        {through: db.OuvrageCout});
     db.Cout.belongsToMany(db.Ouvrage,
-        {through: 'ouvrageCout',
-            as:"ouvrage",
-            foreignKey:"cout_id"
-        });
+        {through: db.OuvrageCout});
 
+    db.Cout.hasMany(db.TypeCout, { as: "cout" });
+    db.TypeCout.belongsTo(db.Cout, {
+        foreignKey: "CoutId",
+        as: "cout",
+    });
 
+// Relation between Ouvrage and SousLot => Many to many
+    db.Ouvrage.belongsToMany(db.SousLot, {through: db.SousLotOuvrage});
+    db.SousLot.belongsToMany(db.Ouvrage, {through: db.SousLotOuvrage});
+
+    db.Lot.hasMany(db.SousLot);
+    db.SousLot.belongsTo(db.Lot, {foreignKey: "LotId"});
+
+    db.Devis.hasMany(db.Lot);
+    db.Lot.belongsTo(db.Devis, {foreignKey: "DeviId"});
 
     // sync all models with database
     await sequelize.sync({ alter: true });

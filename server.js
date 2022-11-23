@@ -1,36 +1,58 @@
-require('rootpath')();
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
 const app = express();
-const cors = require('cors');
-const bodyParser = require('body-parser');
-//const errorHandler = require('_middleware/error-handler');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-
+//Adresse autorisé par l'API
 const corsOptions = {
-    origin: 'http://localhost:4200',
+    origin: "http://localhost:4200"
+};
 
-}
+// const db = require("./app/models");
+const {request} = require("express");
+//Synchronisation de la base de données
+// db.sequelize.sync()
+//     .then(() => {
+//         console.log("Base de données synchroniser");
+//     })
+//     .catch((err) => {
+//         console.log("Echec de la synchronisation de la base de données: " + err.message);
+//     });
+
+// //Suppression et synchronisation de la base de données
+// db.sequelize.sync({ force: true }).then(() => {
+//     console.log("Suppression et synchronisation des tables.");
+// });
+
+
 app.use(cors(corsOptions));
 
-// api routes
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+
+// require("./app/route/cout.route")(app);
+// require("./app/route/ouvrage.route")(app);
+
 app.use('/users', require('./app/controller/user.controller'));
-app.use('/entreprises', require('./app/controller/entreprise.controller'))
-app.use('/ouvrages', require('./app/controller/ouvrage.controller'))
-app.use('/devis', require('./app/controller/devis.controller'))
-app.use('/couts',require('./app/controller/cout.controller'));
-app.use('/clients',require('./app/controller/client.controller'));
+app.use('/clients', require('./app/controller/client.controller'));
+app.use('/entreprises', require('./app/controller/entreprise.controller'));
+app.use('/couts', require('./app/controller/cout.controller'));
+app.use('/ouvrages', require('./app/controller/ouvrage.controller'));
+app.use('/devis', require('./app/controller/devis.controller'));
+app.use('/ouvragesCouts', require('./app/controller/ouvrageCout.controller'));
+app.use('/typeCouts', require('./app/controller/typeCout.controller'));
+app.use('/sousLots', require('./app/controller/sousLot.controller'));
+app.use('/sousLotsouvrages', require('./app/controller/sousLotOuvrage.controller'));
+app.use('/lots', require('./app/controller/lot.controller'));
+
+app.listen(PORT, () => {
+    console.log(`Serveur ecoute sur le port: ${PORT}.`);
+});
 
 
-
-// app.use('/ouvrage', require('./app/controller/ouvrage.controller'));
-
-
-// global error handler
-//app.use(errorHandler);
-
-// start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
-app.listen(port, () => console.log('Server listening on port ' + port));

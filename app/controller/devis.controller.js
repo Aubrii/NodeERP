@@ -62,18 +62,16 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        name: {type: DataTypes.STRING, allowNull: false},
-        status: {type:DataTypes.STRING},
+        name: Joi.string(), allowNull: false,
+        status: Joi.string()
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-
-        name: {type: DataTypes.STRING, allowNull: false},
-        status: {type:DataTypes.STRING},
-
+        name: Joi.string(), allowNull: false,
+        status: Joi.string()
     })
     validateRequest(req, next, schema);
 }

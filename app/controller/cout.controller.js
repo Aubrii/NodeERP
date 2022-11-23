@@ -17,13 +17,17 @@ module.exports = router;
 
 
 function getAll(req, res, next) {
-    coutService.getAll()
+    console.log(req.query)
+    const entrepriseId = parseInt(req.query.EntrepriseId)
+    coutService.getAll(entrepriseId)
         .then(cout => res.json(cout))
         .catch(next);
 }
 
 function getById(req, res, next) {
-    coutService.getById(req.params.id)
+    const entrepriseId = parseInt(req.query.EntrepriseId)
+    const id = req.params.id;
+    coutService.getById(id, entrepriseId)
         .then(cout => res.json(cout))
         .catch(next);
 }
@@ -72,6 +76,7 @@ function updateSchema(req, res, next) {
         prixUnitaire: Joi.number(),
         fournisseur: Joi.string(),
         remarque: Joi.string(),
+        EntrepriseId: Joi.number(),
 
 
     })
