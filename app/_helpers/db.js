@@ -29,6 +29,8 @@ async function initialize() {
     db.Cout = require("../models/cout.model")(sequelize);
     db.Devis = require('../models/devis.model')(sequelize);
     db.Client = require('../models/client.model')(sequelize);
+    db.UserDevis = require('../models/userDevis.model')(sequelize);
+    db.SuperAdmin = require('../models/SuperAdmin.model')(sequelize)
     db.OuvrageCout = require('../models/ouvrageCout.model')(sequelize);
     db.TypeCout = require('../models/typeCouts.model')(sequelize);
     db.SousLot = require('../models/sousLot.model')(sequelize);
@@ -49,7 +51,7 @@ async function initialize() {
 
 
     // Relation between Entreprise and Cout => One to many
-    db.Entreprise.hasMany(db.Cout, { as: "couts" });
+    db.Entreprise.hasMany(db.Cout, { as: "Cout" });
     db.Cout.belongsTo(db.Entreprise, {
         foreignKey: "EntrepriseId",
         as: "entreprise",
@@ -77,17 +79,18 @@ async function initialize() {
     });
 
 
+
     //// Relation between Ouvrage and Cout => Many to many
    // db.Ouvrage.belongsToMany(db.Cout,
      //   {through: db.OuvrageCout});
     //db.Cout.belongsToMany(db.Ouvrage,
       //  {through: db.OuvrageCout});
 
-    db.Cout.hasMany(db.TypeCout, { as: "cout" });
-    db.TypeCout.belongsTo(db.Cout, {
-        foreignKey: "CoutId",
-        as: "cout",
-    });
+
+    //Relation between Devis and User  => Many to many
+
+    db.Devis.belongsToMany(db.User,{through: db.UserDevis});
+    db.User.belongsToMany(db.Devis,{through:db.UserDevis});
 
 // Relation between Ouvrage and SousLot => Many to many
     db.Ouvrage.belongsToMany(db.SousLot, {through: db.SousLotOuvrage});

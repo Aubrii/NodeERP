@@ -1,5 +1,5 @@
 const { expressjwt: jwt } = require("express-jwt");
-const { secret } = require('config.json');
+const { secret } = require('../db.config.json');
 const db = require('../_helpers/db');
 
 module.exports = authorize;
@@ -13,6 +13,7 @@ function authorize() {
         async (req, res, next) => {
             // get user with id from token 'sub' (subject) property
             const user = await db.User.findByPk(req.user.sub);
+            console.log(user)
 
             // check user still exists
             if (!user)

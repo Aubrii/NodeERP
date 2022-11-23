@@ -1,4 +1,5 @@
 const db = require('../_helpers/db');
+const {Users} = require("../_helpers/role");
 
 
 module.exports = {
@@ -10,9 +11,11 @@ module.exports = {
     delete: _delete
 };
 
+//Récuperation de toute les données Devis Entreprise Client
 async function getAll() {
-    return await db.Devis.findAll({ include: ["client"] });
+    return await db.Devis.findAll({ include: ["client","entreprise",db.User] });
 }
+
 async function getAllDevisUserClient(){
     return devis = await db.Devis.findAll(
     ).then((devis) => {
@@ -37,14 +40,13 @@ async function getDevisByClient(clientId) {
 
 async function create(params) {
     // validate
-    if (await db.Devis.findOne({ where: { name: params.name } })) {
+    if (await db.Devis.findOne({where: {name: params.name}})) {
         throw 'Le nom "' + params.name + '" est deja enregistrer';
     }
-
     const devis = new db.Devis(params);
-
     // save devis
     await devis.save();
+
 }
 
 async function update(id, params) {

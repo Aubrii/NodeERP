@@ -13,7 +13,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password }) {
-    const user = await db.User.findOne({ where: { email } });
+    const user = await db.SuperAdmin.findOne({ where: { email } });
 
     if (!user || !(await bcrypt.compare(password, user.password)))
         throw 'Username or password is incorrect';
@@ -24,7 +24,7 @@ async function authenticate({ email, password }) {
 }
 
 async function getAll() {
-    return await db.User.findAll();
+    return await db.SuperAdmin.findAll();
 }
 
 async function getById(id) {
@@ -33,7 +33,7 @@ async function getById(id) {
 
 async function create(params) {
     // validate
-    if (await db.User.findOne({ where: { email: params.email } })) {
+    if (await db.SuperAdmin.findOne({ where: { email: params.email } })) {
         throw 'Username "' + params.email + '" is already taken';
     }
 
@@ -43,7 +43,7 @@ async function create(params) {
     }
 
     // save user
-    await db.User.create(params);
+    await db.SuperAdmin.create(params);
 }
 
 async function update(id, params) {
@@ -51,7 +51,7 @@ async function update(id, params) {
 
     // validate
     const usernameChanged = params.email && user.email !== params.email;
-    if (usernameChanged && await db.User.findOne({ where: { email: params.email } })) {
+    if (usernameChanged && await db.SuperAdmin.findOne({ where: { email: params.email } })) {
         throw 'Username "' + params.email + '" is already taken';
     }
 
@@ -75,7 +75,7 @@ async function _delete(id) {
 // helper functions
 
 async function getUser(id) {
-    const user = await db.User.findByPk(id);
+    const user = await db.SuperAdmin.findByPk(id);
     if (!user) throw 'User not found';
     return user;
 }
