@@ -79,17 +79,13 @@ async function initialize() {
     });
 
 
-    // Relation between Ouvrage and Cout => Many to many
-    db.Ouvrage.belongsToMany(db.Cout,
-        {through: 'ouvrageCout',
-            as:"cout",
-            foreignKey:"ouvrage_id"});
 
-    db.Cout.belongsToMany(db.Ouvrage,
-        {through: 'ouvrageCout',
-            as:"ouvrage",
-            foreignKey:"cout_id"
-        });
+    //// Relation between Ouvrage and Cout => Many to many
+   // db.Ouvrage.belongsToMany(db.Cout,
+     //   {through: db.OuvrageCout});
+    //db.Cout.belongsToMany(db.Ouvrage,
+      //  {through: db.OuvrageCout});
+
 
     //Relation between Devis and User  => Many to many
 
