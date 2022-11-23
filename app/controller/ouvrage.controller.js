@@ -3,7 +3,6 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const  ouvrageService = require('../Service/ouvrage.service')
-const entrepriseService = require("../Service/entreprise.service");
 
 
 router.get('/', getAll);
@@ -11,6 +10,7 @@ router.get('/:id', getById);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
+router.put('addCoutInOuvrage/:coutId/:ouvrageId', addParticipantToMeeting)
 
 module.exports = router;
 
@@ -44,6 +44,19 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'ouvrage effacer' }))
         .catch(next);
 }
+function addParticipantToMeeting(req, res, next) {
+    const { coutId, ouvrageId } = req.params;
+    if (!parseInt(coutId) && !parseInt(ouvrageId)) {
+        res.json({ message: "Un des identifiants n'est pas un nombre..." });
+    } else {
+        const updatedMeeting =  ouvrageService.addCoutInOuvrage(
+            parseInt(coutId),
+            parseInt(ouvrageId)
+        );
+        res.json(updatedMeeting);
+    }
+}
+
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
