@@ -81,6 +81,7 @@ function createSchema(req, res, next) {
         role: Joi.string().valid(Role.Admin, Role.Users).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
+        EntrepriseId: Joi.number().required(),
 
     });
     console.log('toto')

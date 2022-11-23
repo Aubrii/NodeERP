@@ -10,6 +10,7 @@ function model(sequelize) {
         role: { type: DataTypes.STRING, allowNull: false },
         email: { type: DataTypes.STRING, allowNull: false },
         password: { type: DataTypes.STRING, allowNull: false },
+        EntrepriseId: { type: DataTypes.INTEGER, allowNull: false },
     };
 
     const options = {
