@@ -28,19 +28,28 @@ function getById(req, res, next) {
 }
 function create(req, res, next) {
     sousLotService.create(req.body)
-        .then(() => res.send({ message: 'sousLot créer' }))
+        .then(sousLot => res.send({
+            message: 'sousLot créer',
+            sousLot: sousLot
+        }))
         .catch(next);
 }
 
 function update(req, res, next) {
     sousLotService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'sousLot modifier' }))
+        .then(sousLot => res.json({
+            message: 'sousLot modifier',
+            sousLot: sousLot
+        }))
         .catch(next);
 }
 
 function _delete(req, res, next) {
     sousLotService.delete(req.params.id)
-        .then(() => res.json({ message: 'sous lot effacer' }))
+        .then(sousLot => res.json({
+            message: 'sousLot effacer',
+            sousLot: sousLot
+        }))
         .catch(next);
 }
 
@@ -48,18 +57,13 @@ function _delete(req, res, next) {
 function createSchema(req, res, next) {
     const schema = Joi.object({
         designation: Joi.string(),
-        idLot:Joi.number(),
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-
         designation: Joi.string(),
-        LotId:Joi.number(),
-
-
     })
     validateRequest(req, next, schema);
 }

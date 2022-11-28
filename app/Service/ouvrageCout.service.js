@@ -18,12 +18,16 @@ async function getById(id) {
 }
 
 async function deleteByCoutAndOuvrage(params){
+    console.log(params)
+    const coutId = parseInt(params.CoutId)
+    const ouvrageId = parseInt(params.OuvrageId)
     const ouvrageCout = await db.OuvrageCout.findOne({
         where:{
-            CoutId : params.CoutId,
-            OuvrageId : params.OuvrageId
+            CoutId : coutId,
+            OuvrageId : ouvrageId
         }
     })
+    console.log(ouvrageCout)
     return ouvrageCout.destroy()
 }
 

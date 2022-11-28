@@ -48,9 +48,8 @@ app.use('/admin',require('./app/controller/superAdmin.controller'))
 app.use('/clients', require('./app/controller/client.controller'));
 app.use('/entreprises', require('./app/controller/entreprise.controller'));
 app.use('/ouvragesCouts', require('./app/controller/ouvrageCout.controller'));
-app.use('/typeCouts', require('./app/controller/typeCout.controller'));
 app.use('/sousLots', require('./app/controller/sousLot.controller'));
-app.use('/sousLotsouvrages', require('./app/controller/sousLotOuvrage.controller'));
+app.use('/sousLotsOuvrages', require('./app/controller/sousLotOuvrage.controller'));
 app.use('/lots', require('./app/controller/lot.controller'));
 
 app.listen(PORT, () => {

@@ -28,26 +28,35 @@ function getById(req, res, next) {
 }
 function create(req, res, next) {
     lotService.create(req.body)
-        .then(() => res.send({ message: 'lot créer' }))
+        .then(() => res.send({
+            message: 'lot créer',
+            lot: req.body
+        }))
         .catch(next);
 }
 
 function update(req, res, next) {
     lotService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'lot modifier' }))
+        .then(() => res.json({
+            message: 'lot modifier',
+            lot: req.body
+        }))
         .catch(next);
 }
 
 function _delete(req, res, next) {
     lotService.delete(req.params.id)
-        .then(() => res.json({ message: 'lot effacer' }))
+        .then(() => res.json({
+            message: 'lot effacer',
+            lot: req.body
+        }))
         .catch(next);
 }
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
         designation: Joi.string(),
-        LotId:Joi.number()
+        SousLotId:Joi.number()
     });
     validateRequest(req, next, schema);
 }
@@ -55,7 +64,7 @@ function createSchema(req, res, next) {
 function updateSchema(req, res, next) {
     const schema = Joi.object({
         designation: Joi.string(),
-        LotId:Joi.number()
+        SousLotId:Joi.number()
     })
     validateRequest(req, next, schema);
 }

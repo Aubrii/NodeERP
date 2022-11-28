@@ -30,19 +30,31 @@ function getById(req, res, next) {
 
 function create(req, res, next) {
     entrepriseService.create(req.body)
-        .then(() => res.send({ message: 'Entreprise créer' }))
+        .then(() => res.send({
+            message: 'Entreprise créer',
+            entreprise: req.body
+
+        }))
         .catch(next);
 }
 
 function update(req, res, next) {
     entrepriseService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'Entreprise modifier' }))
+        .then(() => res.json({
+            message: 'Entreprise modifier',
+            entreprise: req.body
+
+        }))
         .catch(next);
 }
 
 function _delete(req, res, next) {
     entrepriseService.delete(req.params.id)
-        .then(() => res.json({ message: 'Entreprise effacer' }))
+        .then(() => res.json({
+            message: 'Entreprise effacer',
+            entreprise: req.body
+
+        }))
         .catch(next);
 }
 

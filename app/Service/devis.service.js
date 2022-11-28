@@ -1,34 +1,39 @@
 const db = require('../_helpers/db');
-const {Users} = require("../_helpers/role");
-
 
 module.exports = {
     getAll,
     create,
     update,
     getDevisByClient,
-    getAllDevisUserClient,
-    delete: _delete
+    getDevisByUser,
+    delete: _delete,
+    getById
 };
 
 //Récuperation de toute les données Devis Entreprise Client
 async function getAll() {
-    return await db.Devis.findAll({ include: ["client","entreprise",db.User] });
+    return await db.Devis.findAll({ include: ["client",db.User, db.Lot] });
+}
+async function getById(id) {
+    return await db.Devis.findByPk(id,{ include: ["client",db.User, db.Lot] });
 }
 
-async function getAllDevisUserClient(){
-    return devis = await db.Devis.findAll(
-    ).then((devis) => {
-        return devis;
-    }).catch((err) => {
-        console.log(">> Error while finding devis: ", err);
-    });
 
-
-}
 
 async function getDevisByClient(clientId) {
     return await db.Client.findByPk(clientId, { include: ["devis"] })
+        .then((devis) => {
+            return devis;
+        })
+        .catch((err) => {
+            console.log(">> Error while finding devis: ", err);
+        });
+
+}
+async function getDevisByUser(userId) {
+    return await db.User.findByPk(userId,{
+        include:[db.Devis]
+    })
         .then((devis) => {
             return devis;
         })

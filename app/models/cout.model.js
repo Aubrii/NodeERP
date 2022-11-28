@@ -11,19 +11,24 @@ function model(sequelize){
             primaryKey: true
         },
         type: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         categorie: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         designation: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         unite: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         prixUnitaire: {
-            type: DataTypes.FLOAT
+            type: DataTypes.FLOAT,
+            allowNull: false
         },
         fournisseur: {
             type: DataTypes.STRING,
@@ -33,8 +38,13 @@ function model(sequelize){
             type: DataTypes.STRING,
             allowNull: true
         },
-        EntrepriseId:{
-            type: DataTypes.INTEGER
+        isCout:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        isFraisDeChantier:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false
         }
 
 

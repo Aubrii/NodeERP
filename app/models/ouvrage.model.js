@@ -7,26 +7,40 @@ module.exports = model;
 function model(sequelize){
     const attributes = {
         designation: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         benefice: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         aleas: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         unite: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         ratio: {
-            type: DataTypes.FLOAT
+            type: DataTypes.FLOAT,
+            allowNull: false
         },
         uRatio: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         fournisseur: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        isCout:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        isFraisDeChantier:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false
         }
     };
 

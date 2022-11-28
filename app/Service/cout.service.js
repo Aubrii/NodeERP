@@ -6,32 +6,43 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    getAllFraisDeChantiers,
+    getAllCouts
 };
 
-async function getAll(params) {
+async function getAll() {
+    return await db.Cout.findAll({});
+}
+async function getAllCouts() {
     return await db.Cout.findAll({
-        where:{
-            EntrepriseId : params
-        }
-    });
+        include:[db.Ouvrage],
+        where:{isCout: true}
+    })
+}
+async function getAllFraisDeChantiers() {
+    return await db.Cout.findAll({
+        include:[db.Ouvrage],
+        where:{isFraisDeChantier: true}
+    })
 }
 
-async function getById(id, params) {
-    return await getCout(id, params);
+async function getById(id) {
+    return await getCout(id);
 }
 
 
 async function update(id, params) {
-    const cout = await getCout(id, params);
-
+    const cout = await getCout(id);
     // validate
     const coutchanged = params.designation && cout.designation !== params.designation;
-    if (coutchanged && await db.Cout.findOne({ where: { designation: params.designation } })) {
+    if (coutchanged && await db.Cout.findOne({ where:
+            { designation: params.designation }
+
+    })) {
         throw 'le "' + params.designation + '"est deja enregistrer';
     }
 
-    // copy params to user and save
     Object.assign(cout, params);
     await cout.save();
 }
@@ -41,15 +52,8 @@ async function _delete(id) {
     await cout.destroy();
 }
 
-async function getCout(id,params) {
-    console.log(id)
-    console.log(params)
-    const cout = await db.Cout.findOne({
-        where:{
-            EntrepriseId: params,
-            id:id
-        }
-    });
+async function getCout(id) {
+    const cout = await db.Cout.findByPk(id);
     if (!cout) throw 'cout Inconnue';
     return cout;
 }

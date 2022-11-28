@@ -24,7 +24,9 @@ async function authenticate({ email, password }) {
 }
 
 async function getAll() {
-    return await db.User.findAll();
+    return await db.User.findAll({
+        include:[db.Devis]
+    });
 }
 
 async function getById(id) {
@@ -75,7 +77,9 @@ async function _delete(id) {
 // helper functions
 
 async function getUser(id) {
-    const user = await db.User.findByPk(id);
+    const user = await db.User.findByPk(id,{
+        include:[db.Devis]
+    });
     if (!user) throw 'User not found';
     return user;
 }

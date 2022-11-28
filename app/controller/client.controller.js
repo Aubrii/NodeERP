@@ -6,7 +6,6 @@ const clientService = require('../Service/client.service')
 const authorize = require('../_middleware/authorize')
 
 // routes
-
 router.get('/', getAll);
 router.get('/:id', getById);
 router.post('/new', createSchema, create);
@@ -31,19 +30,29 @@ function getById(req, res, next) {
 
 function create(req, res, next) {
     clientService.create(req.body)
-        .then(() => res.send({ message: 'Client créer' }))
+        .then(() => res.send({
+            message: 'Client créer',
+            client: res.body
+        }))
         .catch(next);
 }
 
 function update(req, res, next) {
     clientService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'Client modifier' }))
+        .then(() => res.send({
+            message: 'Client modifier',
+            client: res.body
+        }))
         .catch(next);
 }
 
 function _delete(req, res, next) {
     clientService.delete(req.params.id)
-        .then(() => res.json({ message: 'Client effacer' }))
+        .then(() => res.send({
+            message: 'Client effacer',
+            client: res.body
+
+        }))
         .catch(next);
 }
 
@@ -54,13 +63,13 @@ function createSchema(req, res, next) {
         firstName: Joi.string(),
         lastName: Joi.string(),
         adresses: Joi.string(),
-        zipcode: Joi.string(),
+        zipcode: Joi.number(),
         city: Joi.string(),
         country: Joi.string(),
         email: Joi.string().email(),
         phonenumber: Joi.number(),
         type:Joi.string(),
-        tvaintra: Joi.string(),
+        tvaintra: Joi.number(),
     });
     validateRequest(req, next, schema);
 }
@@ -70,13 +79,13 @@ function updateSchema(req, res, next) {
         firstName: Joi.string().empty(''),
         lastName: Joi.string().empty(''),
         adresses: Joi.string().empty(''),
-        zipcode: Joi.string().empty(''),
+        zipcode: Joi.number().empty(''),
         city: Joi.string().empty(''),
         country: Joi.string().empty(''),
         email: Joi.string().email().empty(''),
         phonenumber: Joi.number().empty(''),
         type:Joi.string().empty(''),
-        tvaintra: Joi.string().empty(''),
+        tvaintra: Joi.number().empty(''),
     })
     validateRequest(req, next, schema);
 }

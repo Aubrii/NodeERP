@@ -13,9 +13,6 @@ function model(sequelize){
         },
         designation: {
             type: DataTypes.STRING
-        },
-        LotId: {
-            type: DataTypes.INTEGER
         }
     };
 

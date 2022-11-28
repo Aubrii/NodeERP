@@ -12,7 +12,8 @@ module.exports = {
 
 async function getAll() {
     return await db.Lot.findAll({
-        include: db.Devis
+        include: [db.Devis, db.SousLot]
+
     })
 }
 
@@ -42,11 +43,7 @@ async function _delete(id) {
 
 async function getLot(id) {
     const lot = await db.Lot.findByPk(id,{
-        include: [
-            {
-                model: db.Devis
-            },
-        ],
+        include: [db.Devis, db.SousLot]
     });
     if (!lot) throw 'LOT Inconnue';
     return lot;

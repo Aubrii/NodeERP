@@ -14,7 +14,7 @@ function model(sequelize){
         designation: {
             type: DataTypes.STRING
         },
-        DeviId: {
+        SousLotId: {
             type: DataTypes.INTEGER
         }
     };

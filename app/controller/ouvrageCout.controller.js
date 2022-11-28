@@ -7,7 +7,7 @@ const db = require('../_helpers/db');
 
 //
 router.delete('/:CoutId/:OuvrageId', _delete);
-router.post('/new/:CoutId/:OuvrageId',createSchema, create);
+router.get('/new/:CoutId/:OuvrageId',createSchema, create);
 router.get('/', getAll )
 router.get('/:id', getById )
 
@@ -32,7 +32,10 @@ function _delete(req, res, next) {
 
 function create (req, res, next) {
     ouvrageCoutService.create(req.params)
-        .then(() => res.json({ message: 'Cout ajouter à l ouvrage' }))
+        .then(() => res.json({
+            message: 'Cout ajouter à l ouvrage',
+            ouvrageCout: req.body
+        }))
         .catch(next);
 }
 

@@ -7,7 +7,7 @@ const db = require('../_helpers/db');
 
 //
 router.delete('/:OuvrageId/:SousLotId', _delete);
-router.post('/new/:OuvrageId/:SousLotId',createSchema, create);
+router.get('/new/:OuvrageId/:SousLotId',createSchema, create);
 router.get('/', getAll )
 router.get('/:id', getById )
 
@@ -32,7 +32,11 @@ function _delete(req, res, next) {
 
 function create (req, res, next) {
     sousLotOuvrageService.create(req.params)
-        .then(() => res.json({ message: 'ouvrage ajouter au sous lot' }))
+        .then(sousLotOuvrage => res.json({
+            message: 'ouvrage ajouter au sous lot',
+            sousLotOuvrage: sousLotOuvrage
+
+        }))
         .catch(next);
 }
 

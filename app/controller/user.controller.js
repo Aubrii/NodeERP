@@ -55,13 +55,19 @@ function getById(req, res, next) {
 
 function create(req, res, next) {
     userService.create(req.body)
-        .then(() => res.json({ message: 'User created' }))
+        .then(() => res.json({
+            message: 'User created',
+            user: req.body
+        }))
         .catch(next);
 }
 
 function update(req, res, next) {
     userService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'User updated' }))
+        .then(() => res.json({
+            message: 'User updated',
+            user: req.body
+        }))
         .catch(next);
 }
 
@@ -80,8 +86,7 @@ function createSchema(req, res, next) {
         lastName: Joi.string().required(),
         role: Joi.string().valid(Role.Admin, Role.Users).required(),
         email: Joi.string().email().required(),
-        password: Joi.string().min(6).required(),
-        EntrepriseId: Joi.number().required(),
+        password: Joi.string().min(6).required()
 
     });
     console.log('toto')
@@ -95,7 +100,7 @@ function updateSchema(req, res, next) {
         lastName: Joi.string().empty(''),
         role: Joi.string().valid(Role.Admin, Role.Users).empty(''),
         email: Joi.string().email().empty(''),
-        password: Joi.string().min(6).empty(''),
+        password: Joi.string().min(6).empty('')
     })
     validateRequest(req, next, schema);
 }
