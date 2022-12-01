@@ -9,7 +9,7 @@ const authorize = require('../_middleware/authorize')
 // routes
 
 router.get('/',getAll);
-router.get('/:id', getById);
+router.get('/:id', getUserByEntreprise);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
@@ -22,6 +22,11 @@ module.exports = router;
 
 // route functions
 
+function getUserByEntreprise(req, res, next) {
+    SuperAdminService.getAllByEntreprise(req.params.id)
+        .then(user => res.json(user))
+        .catch(next);
+}
 
 function authenticateSchema(req, res, next) {
     const schema = Joi.object({

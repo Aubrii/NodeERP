@@ -19,7 +19,7 @@ async function authenticate({ email, password }) {
         throw 'Username or password is incorrect';
 
     // authentication successful
-    const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '7d' });
+    const token = jwt.sign({sub:user}, config.secret, { expiresIn: '7d' });
     return { ...omitHash(user.get()), token };
 }
 
@@ -28,6 +28,7 @@ async function getAll() {
         include:[db.Devis]
     });
 }
+
 
 async function getById(id) {
     return await getUser(id);

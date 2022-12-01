@@ -2,6 +2,7 @@ const config = require('../db.config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
+const {param} = require("express/lib/router");
 
 module.exports = {
     authenticate,
@@ -9,8 +10,17 @@ module.exports = {
     getById,
     create,
     update,
+    getAllByEntreprise,
     delete: _delete
 };
+
+async function getAllByEntreprise(id){
+    return await db.User.findAll(
+        {where:
+                {EntrepriseId : id}
+        });
+
+}
 
 async function authenticate({ email, password }) {
     const user = await db.SuperAdmin.findOne({ where: { email } });

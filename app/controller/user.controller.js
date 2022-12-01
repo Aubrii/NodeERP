@@ -8,9 +8,9 @@ const authorize = require('../_middleware/authorize')
 
 // routes
 
-router.get('/',getAll);
-router.get('/:id', getById);
-router.post('/new', createSchema, create);
+router.get('/',authorize(),getAll);
+router.get('/:id',authorize(), getById);
+router.post('/new', createSchema, create,);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 router.post('/authenticate', authenticateSchema, authenticate);
