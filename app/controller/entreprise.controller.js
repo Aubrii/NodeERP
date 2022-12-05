@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
+const authorize = require('../_middleware/authorize');
 const  entrepriseService = require('../Service/Entreprise.service')
 
 // routes
 
-router.get('/', getAll);
+router.get('/',authorize(),  getAll);
 router.get('/:id', getById);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
@@ -69,19 +70,16 @@ function createSchema(req, res, next) {
         siret: Joi.number(),
         nafCode: Joi.number(),
         tvaNumber: Joi.number(),
-        adresses: Joi.string(),
-        zipcode: Joi.number(),
-        city: Joi.string(),
-        country: Joi.string(),
+        capital: Joi.number(),
         email: Joi.string().email(),
         phoneNumber: Joi.number(),
+        AdresseId: Joi.number(),
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-
         commercialName: Joi.string(),
         denomination:Joi.string(),
         formeJuridique: Joi.string(),
@@ -89,12 +87,10 @@ function updateSchema(req, res, next) {
         siret: Joi.number(),
         nafCode: Joi.number(),
         tvaNumber: Joi.number(),
-        adresses: Joi.string(),
-        zipcode: Joi.number(),
-        city: Joi.string(),
-        country: Joi.string(),
+        capital: Joi.number(),
         email: Joi.string().email(),
         phoneNumber: Joi.number(),
+        AdresseId: Joi.number(),
 
     })
     validateRequest(req, next, schema);

@@ -14,6 +14,7 @@ module.exports = {
 async function getAll() {
     return await db.Cout.findAll({});
 }
+
 async function getAllCouts() {
     return await db.Cout.findAll({
         include:[db.Ouvrage],

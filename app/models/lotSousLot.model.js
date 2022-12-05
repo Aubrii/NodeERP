@@ -1,26 +1,22 @@
 const { DataTypes } = require('sequelize');
-
+const {types} = require("joi");
 
 module.exports = model;
 
-//Création du model de données d'un ouvrage
-function model(sequelize){
+function model(sequelize) {
     const attributes = {
         id : {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        CoutId: {
+        SousLotId: {
             type: DataTypes.INTEGER
         },
-        isCout: {
-            type: DataTypes.BOOLEAN
+        LotId: {
+            type: DataTypes.INTEGER
         },
-        isFraisDeChantier: {
-            type: DataTypes.BOOLEAN
-        }
     };
 
-    return sequelize.define('TypeCouts', attributes );
-};
+    return sequelize.define('LotSousLot', attributes);
+}

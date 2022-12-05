@@ -52,6 +52,15 @@ app.use('/sousLots', require('./app/controller/sousLot.controller'));
 app.use('/sousLotsOuvrages', require('./app/controller/sousLotOuvrage.controller'));
 app.use('/lots', require('./app/controller/lot.controller'));
 
+
+app.use('/adresses', require('./app/controller/adresse.controller'))
+app.use('/userEntreprise', require('./app/controller/userEntreprise.controller'))
+app.use('/coutsDuDevis', require('./app/controller/coutDuDevis.controller'))
+app.use('/lotSousLots', require('./app/controller/lotSousLot.controller'))
+app.use('/typeCouts', require('./app/controller/typeCout.controller'))
+app.use('/fournisseurs', require('./app/controller/fournisseur.controller'))
+
+
 app.listen(PORT, () => {
     console.log(`Serveur ecoute sur le port: ${PORT}.`);
 });
@@ -63,4 +72,5 @@ app.listen(PORT, () => {
 
 // start server
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
+
 app.listen(port, () => console.log('Server listening on port ' + port));

@@ -77,9 +77,10 @@ function createSchema(req, res, next) {
     const schema = Joi.object({
         name:Joi.string().empty(''),
         status: Joi.string().empty(''),
-        ClientId: Joi.number().empty(''),
-        LotId: Joi.number().empty(''),
-        UserId: Joi.number().empty('')
+        ClientId: Joi.number(),
+        EntrepriseId: Joi.number(),
+        LotId: Joi.number(),
+        UserId: Joi.number()
 
     });
     validateRequest(req, next, schema);
@@ -89,9 +90,11 @@ function updateSchema(req, res, next) {
     const schema = Joi.object({
         name:Joi.string().empty(''),
         status: Joi.string().empty(''),
-        ClientId: Joi.number().empty(''),
-        LotId: Joi.number().empty(''),
-        UserId: Joi.number().empty('')
+        ClientId: Joi.number(),
+        EntrepriseId: Joi.number(),
+        LotId: Joi.number(),
+        UserId: Joi.number()
+
     })
     validateRequest(req, next, schema);
 }

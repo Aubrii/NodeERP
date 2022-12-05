@@ -9,7 +9,8 @@ function model(sequelize) {
         lastName: { type: DataTypes.STRING, allowNull: false },
         role: { type: DataTypes.STRING, allowNull: false },
         email: { type: DataTypes.STRING, allowNull: false },
-        password: { type: DataTypes.STRING, allowNull: false }
+        password: { type: DataTypes.STRING, allowNull: false },
+        AdresseId: { type: DataTypes.INTEGER}
     };
 
     const options = {

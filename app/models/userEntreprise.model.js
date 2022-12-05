@@ -1,19 +1,21 @@
 const { DataTypes } = require('sequelize');
 
-
 module.exports = model;
 
-function model(sequelize){
+function model(sequelize) {
     const attributes = {
         id : {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        designation: {
-            type: DataTypes.STRING
+        UserId: {
+            type: DataTypes.INTEGER
+        },
+        EntrepriseId: {
+            type:DataTypes.INTEGER
         }
     };
 
-    return sequelize.define('SousLot', attributes );
-};
+    return sequelize.define('UserEntreprise', attributes);
+}

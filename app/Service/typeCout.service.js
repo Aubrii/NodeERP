@@ -1,5 +1,4 @@
 const db = require('../_helpers/db');
-const {where} = require("sequelize");
 
 
 module.exports = {
@@ -7,83 +6,42 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete,
-    getAllCout,
-    getAllFraisDeChantier
+    delete: _delete
 };
 
 async function getAll() {
-    return await db.TypeCout.findAll({
-        include: [
-            {
-                model: db.Cout,
-                as: "cout",
-            },
-        ],
-    })
-}
-async function getAllCout() {
-    return await db.TypeCout.findAll({
-        where:{
-            isCout: true
-        },
-        include: [
-            {
-                model: db.Cout,
-                as: "cout",
-            },
-        ],
-    })
-}async function getAllFraisDeChantier() {
-    return await db.TypeCout.findAll({
-        where:{
-            isFraisDeChantier: true
-        },
-        include: [
-            {
-                model: db.Cout,
-                as: "cout",
-            },
-        ],
-    })
+    return await db.TypeCout.findAll();
 }
 
 async function getById(id) {
     return await getTypeCout(id);
 }
 
+async function create(params) {
+    const typeCout = new db.TypeCout(params);
+
+    // save client
+    await typeCout.save();
+}
 
 async function update(id, params) {
     const typeCout = await getTypeCout(id);
+
+
+    // copy params to user and save
     Object.assign(typeCout, params);
     await typeCout.save();
 }
 
 async function _delete(id) {
-    const ouvrage = await getTypeCout(id);
-    await ouvrage.destroy();
+    const typeCout = await getTypeCout(id);
+    await typeCout.destroy();
 }
+
+// helper functions
 
 async function getTypeCout(id) {
-    const typeCout = await db.TypeCout.findByPk(id,{
-        include: [
-            {
-                model: db.Cout,
-                as: "cout",
-            },
-        ],
-    });
-    if (!typeCout) throw 'typeCout Inconnu';
+    const typeCout = await db.TypeCout.findByPk(id);
+    if (!typeCout) throw 'typeCout Inconnue';
     return typeCout;
 }
-
-
-async function create(params) {
-    const ouvrage = new db.TypeCout(params);
-
-    // save client
-    await ouvrage.save();
-}
-
-
-

@@ -10,7 +10,9 @@ module.exports = {
 };
 
 async function getAll() {
-    return await db.Entreprise.findAll();
+    return await db.Entreprise.findAll({
+        include:["adresse"]
+    });
 }
 
 async function getById(id) {
@@ -51,7 +53,14 @@ async function _delete(id) {
 // helper functions
 
 async function getEntreprise(id) {
-    const entreprise = await db.Entreprise.findByPk(id);
+    const entreprise = await db.Entreprise.findByPk(id,{
+        attributes: {
+            exclude: ['id','createdAt', 'updatedAt']
+        },
+        include:{
+            model:db.Adresse
+        }
+    });
     if (!entreprise) throw 'Entreprise Inconnue';
     return entreprise;
 }

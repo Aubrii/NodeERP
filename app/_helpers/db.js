@@ -27,28 +27,56 @@ async function initialize() {
     db.Devis = require('../models/devis.model')(sequelize);
     db.Client = require('../models/client.model')(sequelize);
     db.UserDevis = require('../models/userDevis.model')(sequelize);
-    db.SuperAdmin = require('../models/SuperAdmin.model')(sequelize)
     db.OuvrageCout = require('../models/ouvrageCout.model')(sequelize);
     db.SousLot = require('../models/sousLot.model')(sequelize);
     db.SousLotOuvrage = require('../models/sousLotOuvrage.model')(sequelize);
     db.Lot = require('../models/lot.model')(sequelize);
+    // db.SuperAdmin = require('../models/SuperAdmin.model')(sequelize)
+
+    db.Adresse = require('../models/adresse.model')(sequelize);
+    db.UserEntreprise = require('../models/userEntreprise.model')(sequelize);
+    db.CoutDuDevis = require('../models/coutDuDevis.model')(sequelize);
+    db.LotSoutLot = require('../models/lotSousLot.model')(sequelize);
+    db.TypeCout = require('../models/typeCout.model')(sequelize);
+    db.Fournisseur = require('../models/fournisseur.model')(sequelize);
 
 
 
-    // db.SuperAdmin = require('../models/superadmin.model')(sequelize)
+    db.Adresse.hasMany(db.User);
+    db.User.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
+
+    db.Adresse.hasMany(db.Entreprise);
+    db.Entreprise.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
+
+    db.Adresse.hasMany(db.Client);
+    db.Client.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
+
+    db.User.belongsToMany(db.Entreprise, {through: db.UserEntreprise});
+    db.Entreprise.belongsToMany(db.User, {through: db.UserEntreprise});
+
+    db.Entreprise.hasMany(db.Devis);
+    db.Devis.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
+
+    db.TypeCout.hasMany(db.Cout);
+    db.Cout.belongsTo(db.TypeCout, {foreignKey: "CoutId"});
+
+    db.Fournisseur.hasMany(db.Cout);
+    db.Cout.belongsTo(db.Fournisseur, {foreignKey: "CoutId"});
 
 
 
 
     // Relation between Client and Devis => One to many
-    db.Client.hasMany(db.Devis, { as: "devis" });
-    db.Devis.belongsTo(db.Client, {foreignKey: "ClientId", as: "client",});
+    db.Client.hasMany(db.Devis);
+    db.Devis.belongsTo(db.Client, {foreignKey: "ClientId"});
 
 
     // Relation between Ouvrage and Cout => Many to many
-    db.Ouvrage.belongsToMany(db.Cout, {through: db.OuvrageCout});
-    db.Cout.belongsToMany(db.Ouvrage, {through: db.OuvrageCout});
+    db.Ouvrage.belongsToMany(db.CoutDuDevis, {through: db.OuvrageCout});
+    db.CoutDuDevis.belongsToMany(db.Ouvrage, {through: db.OuvrageCout});
 
+    db.Cout.hasOne(db.CoutDuDevis);
+    db.CoutDuDevis.hasOne(db.Cout);
 
     // Relation between Ouvrage and SousLot => Many to many
     db.Ouvrage.belongsToMany(db.SousLot, {through: db.SousLotOuvrage});
@@ -59,13 +87,13 @@ async function initialize() {
     db.User.belongsToMany(db.Devis,{through:db.UserDevis});
 
     //Relation between SousLot and Lot  => One to many
-    db.SousLot.hasMany(db.Lot);
-    db.Lot.belongsTo(db.SousLot, {foreignKey: "SousLotId"});
+    db.Lot.belongsToMany(db.SousLot,{through: db.LotSoutLot});
+    db.SousLot.belongsToMany(db.Lot,{through:db.LotSoutLot});
 
     //Relation between Lot and Devis  => One to many
     db.Lot.hasMany(db.Devis);
     db.Devis.belongsTo(db.Lot, {foreignKey: "LotId"});
 
     // sync all models with database
-    await sequelize.sync({ alter: true });
+    //await sequelize.sync({ alter: true });
 }

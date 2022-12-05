@@ -73,9 +73,6 @@ function createSchema(req, res, next) {
         unite: Joi.string(),
         ratio: Joi.number(),
         uRatio: Joi.string(),
-        fournisseur: Joi.string(),
-        isCout: Joi.boolean(),
-        isFraisDeChantier: Joi.boolean()
     });
     validateRequest(req, next, schema);
 }
@@ -89,11 +86,6 @@ function updateSchema(req, res, next) {
         unite: Joi.string(),
         ratio: Joi.number(),
         uRatio: Joi.string(),
-        fournisseur: Joi.string().allow(),
-        isCout: Joi.boolean(),
-        isFraisDeChantier: Joi.boolean()
-
-
     })
     validateRequest(req, next, schema);
 }

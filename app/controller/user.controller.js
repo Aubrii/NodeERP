@@ -86,7 +86,8 @@ function createSchema(req, res, next) {
         lastName: Joi.string().required(),
         role: Joi.string().valid(Role.Admin, Role.Users).required(),
         email: Joi.string().email().required(),
-        password: Joi.string().min(6).required()
+        password: Joi.string().min(6).required(),
+        AdresseId: Joi.number(),
 
     });
     console.log('toto')
@@ -100,7 +101,8 @@ function updateSchema(req, res, next) {
         lastName: Joi.string().empty(''),
         role: Joi.string().valid(Role.Admin, Role.Users).empty(''),
         email: Joi.string().email().empty(''),
-        password: Joi.string().min(6).empty('')
+        password: Joi.string().min(6).empty(''),
+        AdresseId: Joi.number(),
     })
     validateRequest(req, next, schema);
 }

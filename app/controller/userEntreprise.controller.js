@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
-const typeCoutService = require('../Service/typeCout.service')
+const userEntrepriseService = require('../Service/userEntreprise.service')
 
 // routes
 router.get('/', getAll);
@@ -16,40 +16,40 @@ module.exports = router;
 // route functions
 
 function getAll(req, res, next) {
-    typeCoutService.getAll()
-        .then(clients => res.json(clients))
+    userEntrepriseService.getAll()
+        .then(userEntreprise => res.json(userEntreprise))
         .catch(next);
 }
 
 function getById(req, res, next) {
-    typeCoutService.getById(req.params.id)
-        .then(clients => res.json(clients))
+    userEntrepriseService.getById(req.params.id)
+        .then(userEntreprise => res.json(userEntreprise))
         .catch(next);
 }
 
 function create(req, res, next) {
-    typeCoutService.create(req.body)
+    userEntrepriseService.create(req.body)
         .then(() => res.send({
-            message: 'TypeCout créer',
-            client: res.body
+            message: 'userEntreprise créer',
+            userEntreprise: res.body
         }))
         .catch(next);
 }
 
 function update(req, res, next) {
-    typeCoutService.update(req.params.id, req.body)
+    userEntrepriseService.update(req.params.id, req.body)
         .then(() => res.send({
-            message: 'TypeCout modifier',
-            typeCout: res.body
+            message: 'userEntreprise modifier',
+            userEntreprise: res.body
         }))
         .catch(next);
 }
 
 function _delete(req, res, next) {
-    typeCoutService.delete(req.params.id)
+    userEntrepriseService.delete(req.params.id)
         .then(() => res.send({
-            message: 'TypeCout effacer',
-            typeCout: res.body
+            message: 'userEntreprise effacer',
+            userEntreprise: res.body
 
         }))
         .catch(next);
@@ -59,18 +59,16 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        type: Joi.string().empty(''),
-        categorie: Joi.string().empty(''),
-        CoutId: Joi.number().empty(''),
+        UserId: Joi.number(),
+        EntrepriseId:Joi.number()
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
-    const schema = Joi.object({
-        type: Joi.string().empty(''),
-        categorie: Joi.string().empty(''),
-        CoutId: Joi.number().empty(''),
+    const schema = Joi.object({id: Joi.number(),
+        UserId: Joi.number(),
+        EntrepriseId:Joi.number()
     })
     validateRequest(req, next, schema);
 }

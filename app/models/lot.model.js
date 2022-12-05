@@ -14,9 +14,6 @@ function model(sequelize){
         designation: {
             type: DataTypes.STRING
         },
-        SousLotId: {
-            type: DataTypes.INTEGER
-        }
     };
 
     return sequelize.define('Lot', attributes );

@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
-const clientService = require('../Service/client.service')
-const authorize = require('../_middleware/authorize')
+const lotSousLotService = require('../Service/lotSousLot.service')
 
 // routes
 router.get('/', getAll);
@@ -17,40 +16,40 @@ module.exports = router;
 // route functions
 
 function getAll(req, res, next) {
-    clientService.getAll()
-        .then(clients => res.json(clients))
+    lotSousLotService.getAll()
+        .then(lotSousLot => res.json(lotSousLot))
         .catch(next);
 }
 
 function getById(req, res, next) {
-    clientService.getById(req.params.id)
-        .then(clients => res.json(clients))
+    lotSousLotService.getById(req.params.id)
+        .then(lotSousLot => res.json(lotSousLot))
         .catch(next);
 }
 
 function create(req, res, next) {
-    clientService.create(req.body)
+    lotSousLotService.create(req.body)
         .then(() => res.send({
-            message: 'Client créer',
-            client: res.body
+            message: 'lotSousLot créer',
+            lotSousLot: res.body
         }))
         .catch(next);
 }
 
 function update(req, res, next) {
-    clientService.update(req.params.id, req.body)
+    lotSousLotService.update(req.params.id, req.body)
         .then(() => res.send({
-            message: 'Client modifier',
-            client: res.body
+            message: 'lotSousLot modifier',
+            lotSousLot: res.body
         }))
         .catch(next);
 }
 
 function _delete(req, res, next) {
-    clientService.delete(req.params.id)
+    lotSousLotService.delete(req.params.id)
         .then(() => res.send({
-            message: 'Client effacer',
-            client: res.body
+            message: 'lotSousLot effacer',
+            lotSousLot: res.body
 
         }))
         .catch(next);
@@ -60,26 +59,16 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        firstName: Joi.string(),
-        lastName: Joi.string(),
-        email: Joi.string().email(),
-        phonenumber: Joi.number(),
-        type: Joi.string(),
-        tvaintra: Joi.number(),
-        AdresseId: Joi.number(),
+        SousLotId: Joi.number().empty(''),
+        LotId: Joi.number().empty(''),
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        firstName: Joi.string(),
-        lastName: Joi.string(),
-        email: Joi.string().email(),
-        phonenumber: Joi.number(),
-        type: Joi.string(),
-        tvaintra: Joi.number(),
-        AdresseId: Joi.number(),
+        SousLotId: Joi.number().empty(''),
+        LotId: Joi.number().empty(''),
     })
     validateRequest(req, next, schema);
 }

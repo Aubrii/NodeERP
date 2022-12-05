@@ -22,9 +22,10 @@ function model(sequelize){
             type: DataTypes.FLOAT,
             allowNull: false
         },
-        FournisseurId: {type:DataTypes.INTEGER}
+        fournisseur: {type:DataTypes.STRING},
+        remarque: {type:DataTypes.STRING}
 
     };
 
-    return  sequelize.define('Cout', attributes );
+    return  sequelize.define('CoutDuDevis', attributes );
 }

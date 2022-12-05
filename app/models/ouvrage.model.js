@@ -30,18 +30,6 @@ function model(sequelize){
             type: DataTypes.STRING,
             allowNull: false
         },
-        fournisseur: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        isCout:{
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        },
-        isFraisDeChantier:{
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        }
     };
 
     return sequelize.define('Ouvrage', attributes );

@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
-const clientService = require('../Service/client.service')
-const authorize = require('../_middleware/authorize')
+const adresseService = require('../Service/adresse.service')
 
 // routes
 router.get('/', getAll);
@@ -17,40 +16,40 @@ module.exports = router;
 // route functions
 
 function getAll(req, res, next) {
-    clientService.getAll()
+    adresseService.getAll()
         .then(clients => res.json(clients))
         .catch(next);
 }
 
 function getById(req, res, next) {
-    clientService.getById(req.params.id)
+    adresseService.getById(req.params.id)
         .then(clients => res.json(clients))
         .catch(next);
 }
 
 function create(req, res, next) {
-    clientService.create(req.body)
+    adresseService.create(req.body)
         .then(() => res.send({
-            message: 'Client créer',
-            client: res.body
+            message: 'Adresse créer',
+            adresse: res.body
         }))
         .catch(next);
 }
 
 function update(req, res, next) {
-    clientService.update(req.params.id, req.body)
+    adresseService.update(req.params.id, req.body)
         .then(() => res.send({
-            message: 'Client modifier',
-            client: res.body
+            message: 'Adresse modifier',
+            adresse: res.body
         }))
         .catch(next);
 }
 
 function _delete(req, res, next) {
-    clientService.delete(req.params.id)
+    adresseService.delete(req.params.id)
         .then(() => res.send({
-            message: 'Client effacer',
-            client: res.body
+            message: 'Adresse effacer',
+            adresse: res.body
 
         }))
         .catch(next);
@@ -60,26 +59,20 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        firstName: Joi.string(),
-        lastName: Joi.string(),
-        email: Joi.string().email(),
-        phonenumber: Joi.number(),
-        type: Joi.string(),
-        tvaintra: Joi.number(),
-        AdresseId: Joi.number(),
+        adresses: Joi.string().empty(''),
+        zipcode: Joi.number().empty(''),
+        city: Joi.string().empty(''),
+        country: Joi.string().empty(''),
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        firstName: Joi.string(),
-        lastName: Joi.string(),
-        email: Joi.string().email(),
-        phonenumber: Joi.number(),
-        type: Joi.string(),
-        tvaintra: Joi.number(),
-        AdresseId: Joi.number(),
+        adresses: Joi.string().empty(''),
+        zipcode: Joi.number().empty(''),
+        city: Joi.string().empty(''),
+        country: Joi.string().empty(''),
     })
     validateRequest(req, next, schema);
 }
