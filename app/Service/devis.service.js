@@ -6,16 +6,16 @@ module.exports = {
     update,
     getDevisByClient,
     getDevisByUser,
-    delete: _delete,
+    delete:_delete,
     getById
 };
 
 //Récuperation de toute les données Devis Entreprise Client
 async function getAll() {
-    return await db.Devis.findAll({ include: ["client",db.User, db.Lot] });
+    return await db.Devis.findAll({ include: [db.Client,db.User, db.Lot] });
 }
 async function getById(id) {
-    return await db.Devis.findByPk(id,{ include: ["client",db.User, db.Lot] });
+    return await db.Devis.findByPk(id,{ include: [db.Client,db.User, db.Lot,db.Entreprise] });
 }
 
 
@@ -49,8 +49,17 @@ async function create(params) {
         throw 'Le nom "' + params.name + '" est deja enregistrer';
     }
     const devis = new db.Devis(params);
-    // save devis
+
+    // await db.UserEntreprise.create(UserId:classRow.datavalue.id, { through: db.UserEntreprise });
     await devis.save();
+    const classRow = await  db.Devis.findOne({ where: { name: params.name } });
+    console.log(classRow)
+
+    await db.UserDevis.create({
+        DeviId:classRow.id,
+        UserId:params.UserId
+    });
+    // save devis
 
 }
 

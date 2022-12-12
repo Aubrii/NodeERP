@@ -5,11 +5,12 @@ const validateRequest = require('../_middleware/validate-request');
 const Role = require('../_helpers/role');
 const userService = require('../Service/User.service');
 const authorize = require('../_middleware/authorize')
+const db = require("../_helpers/db");
 
 // routes
 
-router.get('/',authorize(),getAll);
-router.get('/:id',authorize(), getById);
+router.get('/',getAll);
+router.get('/:id', getById);
 router.post('/new', createSchema, create,);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
@@ -81,15 +82,39 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
+        id: Joi.number(),
         title: Joi.string().required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
-        role: Joi.string().valid(Role.Admin, Role.Users).required(),
+        role: Joi.string().valid(Role.Admin, Role.Users,Role.SuperAdmin).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
         AdresseId: Joi.number(),
+        EntrepriseId: Joi.number(),
+        // Entreprises: [
+        //     {
+        //         id: Joi.number(),
+        //         commercialName:Joi.string(),
+        //         denomination:Joi.string(),
+        //         formeJuridique: Joi.string(),
+        //         rcs: Joi.number(),
+        //         siret: Joi.number(),
+        //         nafCode:Joi.number(),
+        //         tvaNumber:Joi.number(),
+        //         capital:Joi.number(),
+        //         email: Joi.string(),
+        //         phoneNumber:Joi.number(),
+        //         AdresseId:Joi.number(),
+        //     }]
 
-    });
+    },
+    //     {
+    //     include: [{
+    //         include:  [db.Entreprise],
+    //         through: [db.UserEntreprise]
+    //     }]
+    // }
+    );
     console.log('toto')
     validateRequest(req, next, schema);
 }
@@ -99,7 +124,7 @@ function updateSchema(req, res, next) {
         title: Joi.string().empty(''),
         firstName: Joi.string().empty(''),
         lastName: Joi.string().empty(''),
-        role: Joi.string().valid(Role.Admin, Role.Users).empty(''),
+        role: Joi.string().valid(Role.Admin, Role.Users,Role.SuperAdmin).empty(''),
         email: Joi.string().email().empty(''),
         password: Joi.string().min(6).empty(''),
         AdresseId: Joi.number(),

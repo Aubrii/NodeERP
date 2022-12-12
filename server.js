@@ -51,8 +51,6 @@ app.use('/ouvragesCouts', require('./app/controller/ouvrageCout.controller'));
 app.use('/sousLots', require('./app/controller/sousLot.controller'));
 app.use('/sousLotsOuvrages', require('./app/controller/sousLotOuvrage.controller'));
 app.use('/lots', require('./app/controller/lot.controller'));
-
-
 app.use('/adresses', require('./app/controller/adresse.controller'))
 app.use('/userEntreprise', require('./app/controller/userEntreprise.controller'))
 app.use('/coutsDuDevis', require('./app/controller/coutDuDevis.controller'))

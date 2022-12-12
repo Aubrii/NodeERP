@@ -43,7 +43,7 @@ async function initialize() {
 
 
     db.Adresse.hasMany(db.User);
-    db.User.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
+    db.User.belongsTo(db.Adresse)
 
     db.Adresse.hasMany(db.Entreprise);
     db.Entreprise.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
@@ -51,8 +51,8 @@ async function initialize() {
     db.Adresse.hasMany(db.Client);
     db.Client.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
 
-    db.User.belongsToMany(db.Entreprise, {through: db.UserEntreprise});
-    db.Entreprise.belongsToMany(db.User, {through: db.UserEntreprise});
+    db.User.belongsToMany(db.Entreprise, {through: db.UserEntreprise,foreignKey:"UserId",otherKey:"EntrepriseId"});
+    db.Entreprise.belongsToMany(db.User, {through: db.UserEntreprise,foreignKey:"EntrepriseId",otherKey:"UserId"});
 
     db.Entreprise.hasMany(db.Devis);
     db.Devis.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
@@ -95,5 +95,5 @@ async function initialize() {
     db.Devis.belongsTo(db.Lot, {foreignKey: "LotId"});
 
     // sync all models with database
-    //await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: true });
 }

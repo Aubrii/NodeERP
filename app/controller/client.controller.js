@@ -66,8 +66,12 @@ function createSchema(req, res, next) {
         phonenumber: Joi.number(),
         type: Joi.string(),
         tvaintra: Joi.number(),
-        AdresseId: Joi.number(),
-    });
+        Adresse:{
+            adresses: Joi.string(),
+            zipcode: Joi.number(),
+            city: Joi.string(),
+            country: Joi.string(),
+        }    });
     validateRequest(req, next, schema);
 }
 

@@ -10,10 +10,10 @@ const authorize = require('../_middleware/authorize')
 
 router.get('/',getAll);
 router.get('/:id', getUserByEntreprise);
-router.post('/new', createSchema, create);
-router.put('/:id', updateSchema, update);
-router.delete('/:id', _delete);
-router.post('/authenticate', authenticateSchema, authenticate);
+// router.post('/new', createSchema, create);
+// router.put('/:id', updateSchema, update);
+// router.delete('/:id', _delete);
+// router.post('/authenticate', authenticateSchema, authenticate);
 router.get('/current', getCurrent);
 
 
@@ -28,19 +28,19 @@ function getUserByEntreprise(req, res, next) {
         .catch(next);
 }
 
-function authenticateSchema(req, res, next) {
-    const schema = Joi.object({
-        email: Joi.string().required(),
-        password: Joi.string().required()
-    });
-    validateRequest(req, next, schema);
-}
-
-function authenticate(req, res, next) {
-    SuperAdminService.authenticate(req.body)
-        .then(user => res.json(user))
-        .catch(next);
-}
+// function authenticateSchema(req, res, next) {
+//     const schema = Joi.object({
+//         email: Joi.string().required(),
+//         password: Joi.string().required()
+//     });
+//     validateRequest(req, next, schema);
+// }
+//
+// function authenticate(req, res, next) {
+//     SuperAdminService.authenticate(req.body)
+//         .then(user => res.json(user))
+//         .catch(next);
+// }
 
 function getAll(req, res, next) {
     SuperAdminService.getAll()
@@ -58,23 +58,23 @@ function getById(req, res, next) {
         .catch(next);
 }
 
-function create(req, res, next) {
-    SuperAdminService.create(req.body)
-        .then(() => res.json({ message: 'Super Admin  created' }))
-        .catch(next);
-}
-
-function update(req, res, next) {
-    SuperAdminService.update(req.params.id, req.body)
-        .then(() => res.json({ message: 'Super Admin updated' }))
-        .catch(next);
-}
-
-function _delete(req, res, next) {
-    SuperAdminService.delete(req.params.id)
-        .then(() => res.json({ message: 'super admin deleted' }))
-        .catch(next);
-}
+// function create(req, res, next) {
+//     SuperAdminService.create(req.body)
+//         .then(() => res.json({ message: 'Super Admin  created' }))
+//         .catch(next);
+// }
+//
+// function update(req, res, next) {
+//     SuperAdminService.update(req.params.id, req.body)
+//         .then(() => res.json({ message: 'Super Admin updated' }))
+//         .catch(next);
+// }
+//
+// function _delete(req, res, next) {
+//     SuperAdminService.delete(req.params.id)
+//         .then(() => res.json({ message: 'super admin deleted' }))
+//         .catch(next);
+// }
 
 // schema functions
 

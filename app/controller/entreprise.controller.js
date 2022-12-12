@@ -4,6 +4,7 @@ const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/authorize');
 const  entrepriseService = require('../Service/Entreprise.service')
+const Adresse = require('../models/adresse.model')
 
 // routes
 
@@ -30,20 +31,25 @@ function getById(req, res, next) {
 }
 
 function create(req, res, next) {
+
     entrepriseService.create(req.body)
         .then(() => res.send({
+
             message: 'Entreprise créer',
-            entreprise: req.body
+            entreprise: req.body,
 
         }))
         .catch(next);
+    console.log();
+
 }
 
 function update(req, res, next) {
     entrepriseService.update(req.params.id, req.body)
         .then(() => res.json({
             message: 'Entreprise modifier',
-            entreprise: req.body
+            entreprise: req.body,
+
 
         }))
         .catch(next);
@@ -53,7 +59,7 @@ function _delete(req, res, next) {
     entrepriseService.delete(req.params.id)
         .then(() => res.json({
             message: 'Entreprise effacer',
-            entreprise: req.body
+            entreprise: req.body,
 
         }))
         .catch(next);
@@ -63,18 +69,25 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        commercialName: Joi.string(),
-        denomination:Joi.string(),
-        formeJuridique: Joi.string(),
-        rcs: Joi.number(),
-        siret: Joi.number(),
-        nafCode: Joi.number(),
-        tvaNumber: Joi.number(),
-        capital: Joi.number(),
-        email: Joi.string().email(),
-        phoneNumber: Joi.number(),
-        AdresseId: Joi.number(),
+            commercialName: Joi.string(),
+            denomination:Joi.string(),
+            formeJuridique: Joi.string(),
+            rcs: Joi.number(),
+            siret: Joi.number(),
+            nafCode: Joi.number(),
+            tvaNumber: Joi.number(),
+            capital: Joi.number(),
+            email: Joi.string().email(),
+            phoneNumber: Joi.number(),
+        Adresse:{
+            adresses: Joi.string(),
+            zipcode: Joi.number(),
+            city: Joi.string(),
+            country: Joi.string(),
+    }
+
     });
+    // console.log(req.body)
     validateRequest(req, next, schema);
 }
 

@@ -44,30 +44,61 @@ async function create(params) {
     if (params.password) {
         params.password = await bcrypt.hash(params.password, 10);
     }
+    const user = new db.User(params,{include:db.Entreprise,through: db.UserEntreprise});
+    // const userEntreprise = new db.Entreprise(params,{include:[db.User]})
+
 
     // save user
-    await db.User.create(params);
+    await user.save(params);
+
+    const classRow = await  db.User.findOne({ where: { email: params.email } });
+    console.log(classRow)
+   // await db.UserEntreprise.create(UserId:classRow.datavalue.id, { through: db.UserEntreprise });
+
+    await db.UserEntreprise.create({
+        UserId:classRow.id,
+        EntrepriseId:params.EntrepriseId
+    });
 }
 
 async function update(id, params) {
     const user = await getUser(id);
-
+//TODO: VOIR LA METHODE POUR UPDATE
     // validate
     const usernameChanged = params.email && user.email !== params.email;
     if (usernameChanged && await db.User.findOne({ where: { email: params.email } })) {
         throw 'Username "' + params.email + '" is already taken';
     }
 
+
     // hash password if it was entered
     if (params.password) {
         params.password = await bcrypt.hash(params.password, 10);
     }
+    Object.assign(user, params);
+
+    let userId =  user.getDataValue('id');
+    let entrepriseId =  user.getDataValue('EntrepriseId')
+    // console.log("user: " + user.getDataValue('id'))
+    console.log("userId: " + user.id);
+    console.log("entrepriseId: " + user.EntrepriseId);
+    await db.UserEntreprise.create({
+        UserId:  user.id,
+        EntrepriseId: user.EntrepriseId
+    });
+
 
     // copy params to user and save
-    Object.assign(user, params);
     await user.save();
 
-    return omitHash(user.get());
+
+
+
+
+
+
+
+    //return omitHash(user.get());
 }
 
 async function _delete(id) {
@@ -79,7 +110,7 @@ async function _delete(id) {
 
 async function getUser(id) {
     const user = await db.User.findByPk(id,{
-        include:[db.Devis]
+        include:[db.Entreprise,db.Devis]
     });
     if (!user) throw 'User not found';
     return user;
