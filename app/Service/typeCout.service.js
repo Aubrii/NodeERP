@@ -9,8 +9,10 @@ module.exports = {
     delete: _delete
 };
 
-async function getAll() {
-    return await db.TypeCout.findAll();
+async function getAll(entrepriseId) {
+    return await db.TypeCout.findAll({
+        where:{EntrepriseId: entrepriseId}
+    });
 }
 
 async function getById(id) {

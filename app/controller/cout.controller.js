@@ -3,11 +3,14 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const  coutService = require('../Service/cout.service')
+const  fournisseurService = require('../Service/fournisseur.service')
 const ouvrageService = require("../Service/ouvrage.service");
+const {number} = require("joi");
 
 // routes
 
 router.get('/', getAll);
+router.get('/lastCout', getLast);
 router.get('/isCouts', getAllCouts);
 router.get('/isFraisDeChantiers', getAllFraisDeChantiers);
 router.get('/:id', getById);
@@ -20,7 +23,12 @@ module.exports = router;
 
 
 function getAll(req, res, next) {
-    coutService.getAll()
+    coutService.getAll(req.query.EntrepriseId)
+        .then(cout => res.json(cout))
+        .catch(next);
+}
+function getLast(req, res, next) {
+    coutService.getLast()
         .then(cout => res.json(cout))
         .catch(next);
 }
@@ -75,7 +83,9 @@ function createSchema(req, res, next) {
         designation: Joi.string(),
         unite: Joi.string(),
         prixUnitaire:Joi.number(),
-        FournisseurId: Joi.number()
+        EntrepriseId: Joi.number(),
+        TypeCoutId: Joi.number(),
+        FournisseurId:Joi.number()
     });
     validateRequest(req, next, schema);
 }
@@ -85,8 +95,8 @@ function updateSchema(req, res, next) {
         designation: Joi.string(),
         unite: Joi.string(),
         prixUnitaire:Joi.number(),
-        FournisseurId: Joi.number()
-
+        EntrepriseId: Joi.number(),
+        TypeCoutId: Joi.number(),
 
     })
 

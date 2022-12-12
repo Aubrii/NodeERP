@@ -57,6 +57,7 @@ app.use('/coutsDuDevis', require('./app/controller/coutDuDevis.controller'))
 app.use('/lotSousLots', require('./app/controller/lotSousLot.controller'))
 app.use('/typeCouts', require('./app/controller/typeCout.controller'))
 app.use('/fournisseurs', require('./app/controller/fournisseur.controller'))
+app.use('/fournisseursCouts', require('./app/controller/fournisseurCout.controller'))
 
 
 app.listen(PORT, () => {

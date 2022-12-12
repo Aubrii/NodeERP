@@ -25,7 +25,7 @@ async function authenticate({ email, password }) {
 
 async function getAll() {
     return await db.User.findAll({
-        include:[db.Devis]
+        include:[db.Devis, db.Entreprise, db.Adresse]
     });
 }
 
@@ -70,11 +70,12 @@ async function update(id, params) {
         throw 'Username "' + params.email + '" is already taken';
     }
 
-
     // hash password if it was entered
     if (params.password) {
         params.password = await bcrypt.hash(params.password, 10);
     }
+
+    // copy params to user and save
     Object.assign(user, params);
 
     let userId =  user.getDataValue('id');
@@ -91,14 +92,7 @@ async function update(id, params) {
     // copy params to user and save
     await user.save();
 
-
-
-
-
-
-
-
-    //return omitHash(user.get());
+    return omitHash(user.get());
 }
 
 async function _delete(id) {
@@ -110,7 +104,7 @@ async function _delete(id) {
 
 async function getUser(id) {
     const user = await db.User.findByPk(id,{
-        include:[db.Entreprise,db.Devis]
+        include:[db.Devis, db.Entreprise, db.Adresse]
     });
     if (!user) throw 'User not found';
     return user;

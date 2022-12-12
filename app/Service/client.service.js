@@ -10,7 +10,9 @@ module.exports = {
 };
 
 async function getAll() {
-    return await db.Client.findAll();
+    return await db.Client.findAll({
+        include:[db.Adresse, db.Devis]
+    });
 }
 
 async function getById(id) {
@@ -33,9 +35,9 @@ async function update(id, params) {
     const client = await getClient(id);
 
     // validate
-    const usernameChanged = params.lastname && client.lastname !== params.lastname;
-    if (usernameChanged && await db.Client.findOne({ where: { lastname: params.lastname } })) {
-        throw 'le "' + params.lastname + '"est deja enregistrer';
+    const clientChanged = params.email && client.email !== params.email;
+    if (clientChanged && await db.Client.findOne({ where: { email: params.email } })) {
+        throw 'l email : "' + params.email + '"est deja enregistrer';
     }
 
 
@@ -52,7 +54,9 @@ async function _delete(id) {
 // helper functions
 
 async function getClient(id) {
-    const client = await db.Client.findByPk(id);
+    const client = await db.Client.findByPk(id,{
+        include:[db.Adresse, db.Devis]
+    });
     if (!client) throw 'Client Inconnue';
     return client;
 }

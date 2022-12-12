@@ -11,7 +11,7 @@ module.exports = {
 
 async function getAll() {
     return await db.Entreprise.findAll({
-        // include:["adresse"]
+        include:[db.Adresse, db.Devis]
     });
 }
 
@@ -20,26 +20,25 @@ async function getById(id) {
 }
 
 async function create(params) {
-    // validate
+    console.log('ENTREPRISE SERVICE CREATE ',params)
+
     if (await db.Entreprise.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" est deja enregistrer';
     }
 
-    const entreprise = new db.Entreprise(params,{include:[db.Adresse]});
-    console.log('params',params)
+    const entreprise = new db.Entreprise(params, {include: [db.Adresse]});
+
     // save client
     await entreprise.save();
-
-
 }
 
 async function update(id, params) {
     const entreprise = await getEntreprise(id);
 
     // validate
-    const usernameChanged = params.siret && entreprise.siret !== params.siret;
-    if (usernameChanged && await db.Entreprise.findOne({ where: { siret: params.siret } })) {
-        throw 'le "' + params.siret + '"est deja enregistrer';
+    const entrepriseChanged = params.siret && entreprise.siret !== params.siret;
+    if (entrepriseChanged && await db.Entreprise.findOne({ where: { siret: params.siret } })) {
+        throw 'le siret : "' + params.siret + '"est deja enregistrer';
     }
 
     // copy params to user and save
@@ -56,12 +55,7 @@ async function _delete(id) {
 
 async function getEntreprise(id) {
     const entreprise = await db.Entreprise.findByPk(id,{
-        attributes: {
-            exclude: ['id','createdAt', 'updatedAt']
-        },
-        include:{
-            model:db.Adresse
-        }
+        include:[db.Adresse, db.Devis]
     });
     if (!entreprise) throw 'Entreprise Inconnue';
     return entreprise;

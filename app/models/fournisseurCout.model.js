@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const {types} = require("joi");
 
 module.exports = model;
 
@@ -9,9 +10,13 @@ function model(sequelize) {
             autoIncrement: true,
             primaryKey: true
         },
-        commercialName: {type: DataTypes.STRING, allowNull: false},
-        remarque: {type: DataTypes.STRING, allowNull: true}
+        CoutId: {
+            type: DataTypes.INTEGER
+        },
+        FournisseurId: {
+            type: DataTypes.INTEGER
+        }
     };
 
-    return sequelize.define('Fournisseur', attributes);
+    return sequelize.define('fournisseurCout', attributes);
 }

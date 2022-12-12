@@ -3,18 +3,20 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/authorize');
-const  entrepriseService = require('../Service/Entreprise.service')
-const Adresse = require('../models/adresse.model')
+const  entrepriseService = require('../Service/entreprise.service')
+const  adresseService = require('../Service/adresse.service')
 
 // routes
 
-router.get('/',authorize(),  getAll);
+router.get('/',  getAll);
 router.get('/:id', getById);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 
 module.exports = router;
+
+//ADD MIDDLWARE IN ALL ROUTE ,authorize()
 
 // route functions
 
@@ -31,16 +33,14 @@ function getById(req, res, next) {
 }
 
 function create(req, res, next) {
-
+    console.log("ENTREPRISE CONTROLLER CREATE", req.body)
     entrepriseService.create(req.body)
         .then(() => res.send({
-
             message: 'Entreprise créer',
-            entreprise: req.body,
+            entreprise: req.body
+        }),)
 
-        }))
         .catch(next);
-    console.log();
 
 }
 
@@ -48,8 +48,7 @@ function update(req, res, next) {
     entrepriseService.update(req.params.id, req.body)
         .then(() => res.json({
             message: 'Entreprise modifier',
-            entreprise: req.body,
-
+            entreprise: req.body
 
         }))
         .catch(next);
@@ -59,7 +58,7 @@ function _delete(req, res, next) {
     entrepriseService.delete(req.params.id)
         .then(() => res.json({
             message: 'Entreprise effacer',
-            entreprise: req.body,
+            entreprise: req.body
 
         }))
         .catch(next);
@@ -70,7 +69,7 @@ function _delete(req, res, next) {
 function createSchema(req, res, next) {
     const schema = Joi.object({
             commercialName: Joi.string(),
-            denomination:Joi.string(),
+            denomination: Joi.string(),
             formeJuridique: Joi.string(),
             rcs: Joi.number(),
             siret: Joi.number(),
@@ -79,15 +78,14 @@ function createSchema(req, res, next) {
             capital: Joi.number(),
             email: Joi.string().email(),
             phoneNumber: Joi.number(),
-        Adresse:{
-            adresses: Joi.string(),
-            zipcode: Joi.number(),
-            city: Joi.string(),
-            country: Joi.string(),
-    }
-
-    });
-    // console.log(req.body)
+            Adresse:{
+                adresses:Joi.string(),
+                zipcode:Joi.number(),
+                city:Joi.string(),
+                country:Joi.string()
+            }
+    })
+    ;
     validateRequest(req, next, schema);
 }
 

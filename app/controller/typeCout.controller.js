@@ -16,7 +16,7 @@ module.exports = router;
 // route functions
 
 function getAll(req, res, next) {
-    typeCoutService.getAll()
+    typeCoutService.getAll(req.query.EntrepriseId)
         .then(clients => res.json(clients))
         .catch(next);
 }
@@ -62,6 +62,7 @@ function createSchema(req, res, next) {
         type: Joi.string().empty(''),
         categorie: Joi.string().empty(''),
         CoutId: Joi.number().empty(''),
+        EntrepriseId: Joi.number()
     });
     validateRequest(req, next, schema);
 }
@@ -71,6 +72,7 @@ function updateSchema(req, res, next) {
         type: Joi.string().empty(''),
         categorie: Joi.string().empty(''),
         CoutId: Joi.number().empty(''),
+        EntrepriseId: Joi.number()
     })
     validateRequest(req, next, schema);
 }

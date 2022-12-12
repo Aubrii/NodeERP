@@ -39,11 +39,11 @@ async function initialize() {
     db.LotSoutLot = require('../models/lotSousLot.model')(sequelize);
     db.TypeCout = require('../models/typeCout.model')(sequelize);
     db.Fournisseur = require('../models/fournisseur.model')(sequelize);
-
+    db.FournisseurCout = require('../models/fournisseurCout.model')(sequelize)
 
 
     db.Adresse.hasMany(db.User);
-    db.User.belongsTo(db.Adresse)
+    db.User.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
 
     db.Adresse.hasMany(db.Entreprise);
     db.Entreprise.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
@@ -51,17 +51,26 @@ async function initialize() {
     db.Adresse.hasMany(db.Client);
     db.Client.belongsTo(db.Adresse, {foreignKey: "AdresseId"})
 
-    db.User.belongsToMany(db.Entreprise, {through: db.UserEntreprise,foreignKey:"UserId",otherKey:"EntrepriseId"});
-    db.Entreprise.belongsToMany(db.User, {through: db.UserEntreprise,foreignKey:"EntrepriseId",otherKey:"UserId"});
+    db.User.belongsToMany(db.Entreprise, {through: db.UserEntreprise});
+    db.Entreprise.belongsToMany(db.User, {through: db.UserEntreprise});
 
     db.Entreprise.hasMany(db.Devis);
     db.Devis.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
 
     db.TypeCout.hasMany(db.Cout);
-    db.Cout.belongsTo(db.TypeCout, {foreignKey: "CoutId"});
+    db.Cout.belongsTo(db.TypeCout, {foreignKey: "TypeCoutId"});
 
-    db.Fournisseur.hasMany(db.Cout);
-    db.Cout.belongsTo(db.Fournisseur, {foreignKey: "CoutId"});
+    db.Entreprise.hasMany(db.Cout);
+    db.Cout.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
+
+    //test type cout par entreprise
+    db.Entreprise.hasMany(db.TypeCout);
+    db.TypeCout.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
+
+
+
+    db.Fournisseur.belongsToMany(db.Cout, {through: db.FournisseurCout});
+    db.Cout.belongsToMany(db.Fournisseur, {through: db.FournisseurCout});
 
 
 
@@ -95,5 +104,6 @@ async function initialize() {
     db.Devis.belongsTo(db.Lot, {foreignKey: "LotId"});
 
     // sync all models with database
-    await sequelize.sync({ alter: true });
+
+    //await sequelize.sync({ alter: true });
 }

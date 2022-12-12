@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const Joi = require("joi");
 
 module.exports = model;
 
@@ -10,8 +11,8 @@ function model(sequelize) {
             primaryKey: true
         },
         type: {type: DataTypes.STRING, allowNull: false},
-        categorie: {type: DataTypes.INTEGER, allowNull: false},
-        CoutId: {type: DataTypes.STRING, allowNull: false},
+        categorie: {type: DataTypes.STRING, allowNull: false},
+        EntrepriseId: {type:DataTypes.INTEGER}
     };
 
     return sequelize.define('TypeCout', attributes);

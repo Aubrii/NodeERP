@@ -1,6 +1,5 @@
 const db = require('../_helpers/db');
 
-
 module.exports = {
     getAll,
     getById,
@@ -8,11 +7,21 @@ module.exports = {
     update,
     delete: _delete,
     getAllFraisDeChantiers,
-    getAllCouts
+    getAllCouts,
+    getLast
 };
 
-async function getAll() {
-    return await db.Cout.findAll({});
+async function getAll(entrepriseId) {
+    return await db.Cout.findAll({
+        include:[db.TypeCout, db.Fournisseur],
+        where:{EntrepriseId: entrepriseId}
+    });
+}
+async function getLast() {
+    return await db.Cout.findAll({
+        limit:1,
+        order: [ [ 'createdAt', 'DESC' ]]
+    });
 }
 
 async function getAllCouts() {
@@ -21,6 +30,9 @@ async function getAllCouts() {
         where:{isCout: true}
     })
 }
+
+
+
 async function getAllFraisDeChantiers() {
     return await db.Cout.findAll({
         include:[db.Ouvrage],
@@ -54,7 +66,9 @@ async function _delete(id) {
 }
 
 async function getCout(id) {
-    const cout = await db.Cout.findByPk(id);
+    const cout = await db.Cout.findByPk(id,{
+        include:[db.Fournisseur]
+    });
     if (!cout) throw 'cout Inconnue';
     return cout;
 }
@@ -62,6 +76,7 @@ async function getCout(id) {
 
 async function create(params) {
     // validate
+    console.log("PARAMS COUT SERVICE",params)
     if (await db.Cout.findOne({ where: { designation: params.designation } })) {
         throw 'designation "' + params.designation + '" est deja enregistrer';
     }
@@ -71,3 +86,4 @@ async function create(params) {
     // save client
     await cout.save();
 }
+

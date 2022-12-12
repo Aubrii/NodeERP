@@ -22,7 +22,15 @@ function model(sequelize){
             type: DataTypes.FLOAT,
             allowNull: false
         },
-        FournisseurId: {type:DataTypes.INTEGER}
+        CoutDuDeviId:{
+        type: DataTypes.INTEGER
+    },
+        EntrepriseId:{
+            type: DataTypes.INTEGER
+        },
+        TypeCoutId:{
+            type: DataTypes.INTEGER
+        }
 
     };
 
