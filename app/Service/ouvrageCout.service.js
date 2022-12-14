@@ -23,7 +23,7 @@ async function deleteByCoutAndOuvrage(params){
     const ouvrageId = parseInt(params.OuvrageId)
     const ouvrageCout = await db.OuvrageCout.findOne({
         where:{
-            CoutId : coutId,
+            CoutDuDeviId : coutId,
             OuvrageId : ouvrageId
         }
     })

@@ -10,17 +10,20 @@ function model(sequelize){
             autoIncrement: true,
             primaryKey: true
         },
+        type:{
+            type:DataTypes.STRING
+        },
+        categorie:{
+            type: DataTypes.STRING
+        },
         designation: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         },
         unite: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
         },
         prixUnitaire: {
-            type: DataTypes.FLOAT,
-            allowNull: false
+            type: DataTypes.FLOAT
         },
         fournisseur: {type:DataTypes.STRING},
         remarque: {type:DataTypes.STRING}

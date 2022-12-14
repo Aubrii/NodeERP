@@ -12,15 +12,17 @@ module.exports = {
     getAllFraisDeChantiers
 };
 
-async function getAll() {
+async function getAll(entrepriseId) {
     return await db.Ouvrage.findAll({
-        include: [db.Cout, db.SousLot]
+        include: [db.CoutDuDevis, db.SousLot],
+        where:{EntrepriseId: entrepriseId}
+
     })
 }
 async function getAllCouts() {
     return await db.Ouvrage.findAll({
         where:{isCout: true},
-        include: [db.Cout, db.SousLot]
+        include: [db.CoutDuDevis, db.SousLot]
     })
 }
 async function getAllFraisDeChantiers() {
@@ -54,7 +56,7 @@ async function _delete(id) {
 
 async function getOuvrage(id) {
     const ouvrage = await db.Ouvrage.findByPk(id,{
-        include: [db.Cout, db.SousLot],
+        include: [db.CoutDuDevis, db.SousLot],
     });
     if (!ouvrage) throw 'Ouvrage Inconnue';
     return ouvrage;

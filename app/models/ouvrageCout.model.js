@@ -13,7 +13,7 @@ function model(sequelize) {
         OuvrageId: {
             type: DataTypes.INTEGER
         },
-        CoutDuDevisId: {
+        CoutDuDeviId: {
             type: DataTypes.INTEGER
         },
     };

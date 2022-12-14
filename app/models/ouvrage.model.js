@@ -30,6 +30,9 @@ function model(sequelize){
             type: DataTypes.STRING,
             allowNull: false
         },
+        EntrepriseId:{
+            type: DataTypes.INTEGER
+        },
     };
 
     return sequelize.define('Ouvrage', attributes );

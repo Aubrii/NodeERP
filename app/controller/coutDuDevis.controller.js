@@ -64,8 +64,12 @@ function createSchema(req, res, next) {
         designation: Joi.string(),
         unite: Joi.string(),
         prixUnitaire: Joi.number(),
-        fournisseur: Joi.string(),
-        remarque: Joi.string(),
+        // fournisseur: Joi.string(),
+        // remarque: Joi.string(),
+        Fournisseurs: {
+            commercialName: Joi.string(),
+            remarque: Joi.string()
+        }
     });
     validateRequest(req, next, schema);
 }

@@ -52,8 +52,9 @@ async function create(params) {
     // save user
     await user.save(params);
     const classRow = await  db.User.findOne({ where: { email: params.email } });
+    //const test = await db.Entreprise.findByPk()
     console.log(classRow)
-
+    console.log("PARAMS:",params)
     await db.UserEntreprise.create({
         UserId:classRow.id,
         EntrepriseId:params.EntrepriseId

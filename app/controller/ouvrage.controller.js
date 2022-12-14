@@ -18,7 +18,7 @@ module.exports = router;
 
 
 function getAll(req, res, next) {
-    ouvrageService.getAll()
+    ouvrageService.getAll(req.query.EntrepriseId)
         .then(ouvrage => res.json(ouvrage))
         .catch(next);
 }
@@ -73,19 +73,20 @@ function createSchema(req, res, next) {
         unite: Joi.string(),
         ratio: Joi.number(),
         uRatio: Joi.string(),
+        EntrepriseId: Joi.number()
     });
     validateRequest(req, next, schema);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-
         designation: Joi.string(),
         benefice:Joi.number(),
         aleas: Joi.number(),
         unite: Joi.string(),
         ratio: Joi.number(),
         uRatio: Joi.string(),
+        EntrepriseId: Joi.number()
     })
     validateRequest(req, next, schema);
 }

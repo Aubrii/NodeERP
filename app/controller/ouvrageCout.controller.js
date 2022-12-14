@@ -42,7 +42,7 @@ function create (req, res, next) {
 function createSchema(req, res, next) {
     const schema = Joi.object({
         OuvrageId: Joi.number(),
-        CoutDuDevisId: Joi.number()
+        CoutDuDeviId: Joi.number()
     });
     validateRequest(req, next, schema);
 }

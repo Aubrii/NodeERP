@@ -63,10 +63,12 @@ async function initialize() {
     db.Entreprise.hasMany(db.Cout);
     db.Cout.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
 
-    //test type cout par entreprise
+
     db.Entreprise.hasMany(db.TypeCout);
     db.TypeCout.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
 
+    db.Entreprise.hasMany(db.Ouvrage);
+    db.Ouvrage.belongsTo(db.Entreprise, {foreignKey: "EntrepriseId"});
 
 
     db.Fournisseur.belongsToMany(db.Cout, {through: db.FournisseurCout});
