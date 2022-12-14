@@ -36,6 +36,8 @@ async function getById(id) {
 }
 
 async function create(params) {
+    console.log("param",params)
+
     // validate
     if (await db.User.findOne({where: {email: params.email}})) {
         throw 'Username "' + params.email + '" is already taken';
@@ -45,20 +47,41 @@ async function create(params) {
     if (params.password) {
         params.password = await bcrypt.hash(params.password, 10);
     }
-    const user = new db.User(params, {include: [db.Adresse,db.Entreprise]});
-    // const userEntreprise = new db.Entreprise(params,{include:[db.User]})
+    // const user = new db.User(params, {include: [db.Adresse,db.Entreprise]});
+    // // const userEntreprise = new db.Entreprise(params,{include:[db.User]})
+    //
+    //
+    // // save user
+    // await user.save(params);
+    // const classRow = await  db.User.findOne({ where: { email: params.email } });
+    // //const test = await db.Entreprise.findByPk()
+    // console.log(classRow)
+    // console.log("PARAMS:",params)
+    // await db.UserEntreprise.create({
+    //     UserId:classRow.id,
+    //     EntrepriseId:params.EntrepriseId
+    // });
 
-
-    // save user
-    await user.save(params);
-    const classRow = await  db.User.findOne({ where: { email: params.email } });
-    //const test = await db.Entreprise.findByPk()
-    console.log(classRow)
-    console.log("PARAMS:",params)
-    await db.UserEntreprise.create({
-        UserId:classRow.id,
+    const user = await db.User.create({
+        title:params.title,
+        firstName:params.firstName,
+        lastName:params.lastName,
+        role:params.role,
+        email:params.email,
+        password:params.password,
+        AdresseId:params.AdresseId,
         EntrepriseId:params.EntrepriseId
     });
+
+    // const idEntreprise = await db.Entreprise.findByPk(params.EntrepriseId)
+    // console.log(idEntreprise.getDataValue('id'))
+    // const entreprise = await db.Entreprise.create({
+    //  id:idEntreprise.getDataValue('id'),
+    // });
+
+    await user.addEntreprise(params.EntrepriseId);
+
+
 }
 
 

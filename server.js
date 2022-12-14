@@ -9,6 +9,7 @@ const corsOptions = {
 
 // const db = require("./app/models");
 const {request} = require("express");
+const errorHandler = require("./app/_middleware/error-handler");
 //Synchronisation de la base de données
 // db.sequelize.sync()
 //     .then(() => {
@@ -67,7 +68,7 @@ app.listen(PORT, () => {
 
 
 // global error handler
-//app.use(errorHandler);
+app.use(errorHandler);
 
 // start server
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;

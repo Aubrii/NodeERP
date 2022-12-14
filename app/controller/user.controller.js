@@ -95,19 +95,19 @@ function createSchema(req, res, next) {
             city:Joi.string(),
             country:Joi.string(),
         },
-        // Entreprise:{
-        //     commercialName: Joi.string(),
-        //     denomination:Joi.string(),
-        //     formeJuridique: Joi.string(),
-        //     rcs: Joi.number(),
-        //     siret: Joi.number(),
-        //     nafCode: Joi.number(),
-        //     tvaNumber: Joi.number(),
-        //     capital: Joi.number(),
-        //     email: Joi.string().email(),
-        //     phoneNumber: Joi.number(),
-        //     AdresseId: Joi.number(),
-        // }
+        Entreprise:{
+            commercialName: Joi.string(),
+            denomination:Joi.string(),
+            formeJuridique: Joi.string(),
+            rcs: Joi.number(),
+            siret: Joi.number(),
+            nafCode: Joi.number(),
+            tvaNumber: Joi.number(),
+            capital: Joi.number(),
+            email: Joi.string().email(),
+            phoneNumber: Joi.number(),
+            AdresseId: Joi.number(),
+        }
 
 
     },
