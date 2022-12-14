@@ -82,30 +82,33 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        id: Joi.number(),
         title: Joi.string().required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         role: Joi.string().valid(Role.Admin, Role.Users,Role.SuperAdmin).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
-        AdresseId: Joi.number(),
         EntrepriseId: Joi.number(),
-        // Entreprises: [
-        //     {
-        //         id: Joi.number(),
-        //         commercialName:Joi.string(),
-        //         denomination:Joi.string(),
-        //         formeJuridique: Joi.string(),
-        //         rcs: Joi.number(),
-        //         siret: Joi.number(),
-        //         nafCode:Joi.number(),
-        //         tvaNumber:Joi.number(),
-        //         capital:Joi.number(),
-        //         email: Joi.string(),
-        //         phoneNumber:Joi.number(),
-        //         AdresseId:Joi.number(),
-        //     }]
+        Adresse:{
+            adresses:Joi.string(),
+            zipcode:Joi.number(),
+            city:Joi.string(),
+            country:Joi.string(),
+        },
+        // Entreprise:{
+        //     commercialName: Joi.string(),
+        //     denomination:Joi.string(),
+        //     formeJuridique: Joi.string(),
+        //     rcs: Joi.number(),
+        //     siret: Joi.number(),
+        //     nafCode: Joi.number(),
+        //     tvaNumber: Joi.number(),
+        //     capital: Joi.number(),
+        //     email: Joi.string().email(),
+        //     phoneNumber: Joi.number(),
+        //     AdresseId: Joi.number(),
+        // }
+
 
     },
     //     {
@@ -128,6 +131,8 @@ function updateSchema(req, res, next) {
         email: Joi.string().email().empty(''),
         password: Joi.string().min(6).empty(''),
         AdresseId: Joi.number(),
+        EntrepriseId: Joi.number(),
+
     })
     validateRequest(req, next, schema);
 }

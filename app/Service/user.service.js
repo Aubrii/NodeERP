@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
 
+
 module.exports = {
     authenticate,
     getAll,
@@ -36,7 +37,7 @@ async function getById(id) {
 
 async function create(params) {
     // validate
-    if (await db.User.findOne({ where: { email: params.email } })) {
+    if (await db.User.findOne({where: {email: params.email}})) {
         throw 'Username "' + params.email + '" is already taken';
     }
 
@@ -44,22 +45,21 @@ async function create(params) {
     if (params.password) {
         params.password = await bcrypt.hash(params.password, 10);
     }
-    const user = new db.User(params,{include:db.Entreprise,through: db.UserEntreprise});
+    const user = new db.User(params, {include: [db.Adresse,db.Entreprise]});
     // const userEntreprise = new db.Entreprise(params,{include:[db.User]})
 
 
     // save user
     await user.save(params);
-
     const classRow = await  db.User.findOne({ where: { email: params.email } });
     console.log(classRow)
-   // await db.UserEntreprise.create(UserId:classRow.datavalue.id, { through: db.UserEntreprise });
 
     await db.UserEntreprise.create({
         UserId:classRow.id,
         EntrepriseId:params.EntrepriseId
     });
 }
+
 
 async function update(id, params) {
     const user = await getUser(id);
@@ -77,7 +77,7 @@ async function update(id, params) {
 
     // copy params to user and save
     Object.assign(user, params);
-
+    console.log(params);
     let userId =  user.getDataValue('id');
     let entrepriseId =  user.getDataValue('EntrepriseId')
     // console.log("user: " + user.getDataValue('id'))
@@ -85,7 +85,7 @@ async function update(id, params) {
     console.log("entrepriseId: " + user.EntrepriseId);
     await db.UserEntreprise.create({
         UserId:  user.id,
-        EntrepriseId: user.EntrepriseId
+        EntrepriseId: params.EntrepriseId
     });
 
 
