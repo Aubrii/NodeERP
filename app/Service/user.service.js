@@ -47,20 +47,6 @@ async function create(params) {
     if (params.password) {
         params.password = await bcrypt.hash(params.password, 10);
     }
-    // const user = new db.User(params, {include: [db.Adresse,db.Entreprise]});
-    // // const userEntreprise = new db.Entreprise(params,{include:[db.User]})
-    //
-    //
-    // // save user
-    // await user.save(params);
-    // const classRow = await  db.User.findOne({ where: { email: params.email } });
-    // //const test = await db.Entreprise.findByPk()
-    // console.log(classRow)
-    // console.log("PARAMS:",params)
-    // await db.UserEntreprise.create({
-    //     UserId:classRow.id,
-    //     EntrepriseId:params.EntrepriseId
-    // });
 
     const user = await db.User.create({
         title:params.title,
@@ -70,14 +56,9 @@ async function create(params) {
         email:params.email,
         password:params.password,
         AdresseId:params.AdresseId,
-        EntrepriseId:params.EntrepriseId
+        EntrepriseId:params.EntrepriseId,
+        avatarUrl: params.avatarUrl
     });
-
-    // const idEntreprise = await db.Entreprise.findByPk(params.EntrepriseId)
-    // console.log(idEntreprise.getDataValue('id'))
-    // const entreprise = await db.Entreprise.create({
-    //  id:idEntreprise.getDataValue('id'),
-    // });
 
     await user.addEntreprise(params.EntrepriseId);
 

@@ -5,7 +5,6 @@ const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/authorize');
 const  entrepriseService = require('../Service/entreprise.service')
 const  adresseService = require('../Service/adresse.service')
-
 // routes
 
 router.get('/',  getAll);
@@ -13,6 +12,8 @@ router.get('/:id', getById);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
+router.get('/admin/entreprise/:id', getById);
+router.get('/admin/entreprise/client/:id', getClientByEntreprise);
 
 module.exports = router;
 
@@ -26,6 +27,12 @@ function getAll(req, res, next) {
         .catch(next);
 }
 
+function getClientByEntreprise(req, res, next) {
+    entrepriseService.getClientByEntreprise(req.params)
+        .then(entreprise => res.json(entreprise))
+        .catch(next);
+
+}
 function getById(req, res, next) {
     entrepriseService.getById(req.params.id)
         .then(entreprise => res.json(entreprise))

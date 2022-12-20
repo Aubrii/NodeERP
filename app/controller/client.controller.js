@@ -8,6 +8,7 @@ const authorize = require('../_middleware/authorize')
 // routes
 router.get('/', getAll);
 router.get('/:id', getById);
+router.get('/entreprises/:id', getByCompany);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
@@ -22,11 +23,17 @@ function getAll(req, res, next) {
         .catch(next);
 }
 
+function getByCompany(req, res, next) {
+    clientService.getByCompany(req.params.id)
+        .then(clients => res.json(clients))
+        .catch(next);
+}
 function getById(req, res, next) {
     clientService.getById(req.params.id)
         .then(clients => res.json(clients))
         .catch(next);
 }
+
 
 function create(req, res, next) {
     clientService.create(req.body)

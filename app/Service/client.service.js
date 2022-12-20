@@ -6,6 +6,7 @@ module.exports = {
     getById,
     create,
     update,
+    getByCompany,
     delete: _delete
 };
 
@@ -13,6 +14,11 @@ async function getAll() {
     return await db.Client.findAll({
         include:[db.Adresse, db.Devis]
     });
+}
+async function getByCompany(id,params){
+    return await db.Devis.findAll(id,{where:{id:params.EntrepriseId},
+    include:[db.Client]})
+
 }
 
 async function getById(id) {
