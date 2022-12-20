@@ -26,7 +26,7 @@ function model(sequelize){
             type: DataTypes.FLOAT
         },
         fournisseur: {type:DataTypes.STRING},
-        remarque: {type:DataTypes.STRING}
+        remarque: {type:DataTypes.STRING, allowNull:true}
 
     };
 

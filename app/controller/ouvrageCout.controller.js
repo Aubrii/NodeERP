@@ -6,15 +6,27 @@ const ouvrageCoutService = require('../Service/ouvrageCout.service')
 const db = require('../_helpers/db');
 
 //
+router.get('/price/:id', getOuvragePriceById )
 router.delete('/:CoutId/:OuvrageId', _delete);
 router.get('/new/:CoutId/:OuvrageId',createSchema, create);
 router.get('/', getAll )
-router.get('/:id', getById )
+router.get('/price', getAllOuvragePrice)
+router.get('/:id', getById)
 
 module.exports = router;
 
 function getAll(req, res, next) {
     ouvrageCoutService.getAll()
+        .then(ouvrageCout => res.json(ouvrageCout))
+        .catch(next);
+}
+function getOuvragePriceById(req, res, next) {
+    ouvrageCoutService.getOuvragePriceById(req.params.id)
+        .then(ouvrageCout => res.json(ouvrageCout))
+        .catch(next);
+}
+function getAllOuvragePrice(req, res, next) {
+    ouvrageCoutService.getAllOuvragePrice()
         .then(ouvrageCout => res.json(ouvrageCout))
         .catch(next);
 }

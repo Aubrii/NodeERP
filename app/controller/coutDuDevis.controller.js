@@ -28,6 +28,7 @@ function getById(req, res, next) {
 }
 
 function create(req, res, next) {
+    console.log("cout du devis controller create req.body : ",req.body)
     coutDuDevisService.create(req.body)
         .then(() => res.send({
             message: 'coutDuDevis créer',
@@ -59,17 +60,15 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
+        OuvrageId:Joi.number(),
         type: Joi.string(),
         categorie:Joi.string(),
         designation: Joi.string(),
         unite: Joi.string(),
         prixUnitaire: Joi.number(),
-        // fournisseur: Joi.string(),
-        // remarque: Joi.string(),
-        Fournisseurs: {
-            commercialName: Joi.string(),
-            remarque: Joi.string()
-        }
+        fournisseur: Joi.string(),
+        remarque: Joi.string().empty(''),
+
     });
     validateRequest(req, next, schema);
 }

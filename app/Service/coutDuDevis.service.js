@@ -10,7 +10,9 @@ module.exports = {
 };
 
 async function getAll() {
-    return await db.CoutDuDevis.findAll();
+    return await db.CoutDuDevis.findAll({
+        include:[db.Ouvrage]
+    });
 }
 
 async function getById(id) {
@@ -18,10 +20,13 @@ async function getById(id) {
 }
 
 async function create(params) {
+    console.log("COUT DU DEVIS SERVICE CREATE params: ", params)
     const coutDuDevis = new db.CoutDuDevis(params);
+
 
     // save client
     await coutDuDevis.save();
+    await coutDuDevis.addOuvrage(params.OuvrageId)
 }
 
 async function update(id, params) {

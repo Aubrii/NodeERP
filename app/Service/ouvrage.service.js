@@ -8,7 +8,7 @@ module.exports = {
     create,
     update,
     delete: _delete,
-    getAllCouts,
+    getAllPrice,
     getAllFraisDeChantiers
 };
 
@@ -16,15 +16,33 @@ async function getAll(entrepriseId) {
     return await db.Ouvrage.findAll({
         include: [db.CoutDuDevis, db.SousLot],
         where:{EntrepriseId: entrepriseId}
+    })
+}
 
-    })
+
+
+
+
+async function getAllPrice() {
+    const ouvrages = await db.Ouvrage.findAll({
+        attributes: ['id', [db.Ouvrage.sequelize.fn('SUM', db.Ouvrage.sequelize.col('Cout.montant')), 'prixTotal']],
+        include: [
+            {
+                model: db.OuvrageCout,
+                include: [
+                    {
+                        model: db.Cout,
+                    },
+                ],
+            },
+        ],
+        group: ['Ouvrage.id'],
+    });
+    console.log("ouvrage service getAllPrice :", ouvrages); // affiche le prix total de chaque ouvrage sous forme d'objet avec l'id et le prix total
+
+
 }
-async function getAllCouts() {
-    return await db.Ouvrage.findAll({
-        where:{isCout: true},
-        include: [db.CoutDuDevis, db.SousLot]
-    })
-}
+
 async function getAllFraisDeChantiers() {
     return await db.Ouvrage.findAll({
         where:{isFraisDeChantier: true},

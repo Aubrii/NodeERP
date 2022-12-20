@@ -5,8 +5,8 @@ const validateRequest = require('../_middleware/validate-request');
 const  ouvrageService = require('../Service/ouvrage.service')
 
 
+router.get('/price', getAllPrice);
 router.get('/', getAll);
-router.get('/isCouts', getAllCouts);
 router.get('/isFraisDeChantiers', getAllFraisDeChantiers);
 router.get('/:id', getById);
 router.post('/new', createSchema, create);
@@ -22,8 +22,8 @@ function getAll(req, res, next) {
         .then(ouvrage => res.json(ouvrage))
         .catch(next);
 }
-function getAllCouts(req, res, next) {
-    ouvrageService.getAllCouts()
+function getAllPrice(req, res, next) {
+    ouvrageService.getAllPrice()
         .then(ouvrage => res.json(ouvrage))
         .catch(next);
 }

@@ -7,10 +7,53 @@ module.exports = {
     getById,
     create,
     deleteByCoutAndOuvrage,
+    getOuvragePriceById,
+    getAllOuvragePrice
 };
 
 async function getAll() {
-    return await db.OuvrageCout.findAll({})
+    return await db.OuvrageCout.findAll({
+    })
+}
+
+
+async function getAllOuvragePrice() {
+    const sommeCouts = await db.Ouvrage.findAll({
+        attributes: [[db.Ouvrage.sequelize.fn('SUM', db.Ouvrage.sequelize.col('coutDuDevis.prixUnitaire')), 'sommeCouts']],
+        include: [
+            {
+                model: db.CoutDuDevis,
+                include: [
+                    {
+                        model: db.Ouvrage,
+                    },
+                ],
+            },
+        ],
+        group: ['Ouvrage.id'],
+    });
+    return sommeCouts;
+}
+
+
+async function getOuvragePriceById(id) {
+    // const sommeCouts = await db.Ouvrage.findAll({
+    const sommeCouts = await db.Ouvrage.findOne({
+        where: { id: id },
+        attributes: [[db.Ouvrage.sequelize.fn('SUM', db.Ouvrage.sequelize.col('coutDuDevis.prixUnitaire')), 'sommeCouts']],
+        include: [
+            {
+                model: db.CoutDuDevis,
+                include: [
+                    {
+                        model: db.Ouvrage,
+                    },
+                ],
+            },
+        ],
+        group: ['Ouvrage.id'],
+    });
+        return sommeCouts;
 }
 
 async function getById(id) {

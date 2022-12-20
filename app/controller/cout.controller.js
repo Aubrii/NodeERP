@@ -97,6 +97,7 @@ function updateSchema(req, res, next) {
         prixUnitaire:Joi.number(),
         EntrepriseId: Joi.number(),
         TypeCoutId: Joi.number(),
+        FournisseurId:Joi.number()
 
     })
 

@@ -27,7 +27,6 @@ async function create(params) {
 async function update(id, params) {
     const fournisseur = await getFournisseur(id);
 
-
     // copy params to user and save
     Object.assign(fournisseur, params);
     await fournisseur.save();

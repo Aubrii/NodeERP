@@ -67,7 +67,7 @@ async function _delete(id) {
 
 async function getCout(id) {
     const cout = await db.Cout.findByPk(id,{
-        include:[db.Fournisseur]
+        include:[db.Fournisseur,db.TypeCout]
     });
     if (!cout) throw 'cout Inconnue';
     return cout;
@@ -82,8 +82,10 @@ async function create(params) {
     }
 
     const cout = new db.Cout(params);
+    // await user.addEntreprise(params.EntrepriseId);
 
     // save client
     await cout.save();
+    await cout.addFournisseur(params.FournisseurId);
 }
 
