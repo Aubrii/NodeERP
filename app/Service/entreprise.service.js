@@ -1,9 +1,12 @@
 const db = require('../_helpers/db');
+const sequelize = require("sequelize");
 
 
 module.exports = {
     getAll,
     getById,
+    getEntreprise,
+    getClientByEntreprise,
     create,
     update,
     delete: _delete
@@ -51,11 +54,31 @@ async function _delete(id) {
     await entreprise.destroy();
 }
 
-// helper functions
+// async function getDevisByCompany(id,params) {
+//     const entreprise = await db.Entreprise.findByPk(id,{
+//         include:db.Devis.findAll({ where: { EntrepriseId: params.id } })
+//     });
 
+// }
+
+// helper functions
+async function getClientByEntreprise(params) {
+    const entrepriseId = params.id;
+    const clients = await db.Entreprise.findOne({
+        where: { id: entrepriseId },
+        include: [{
+            model: db.Devis,
+            include: [{
+                model: db.Client
+            }]
+        }]
+
+    });
+    return clients
+}
 async function getEntreprise(id) {
     const entreprise = await db.Entreprise.findByPk(id,{
-        include:[db.Adresse, db.Devis]
+        include:[db.Adresse, db.Devis,db.User],
     });
     if (!entreprise) throw 'Entreprise Inconnue';
     return entreprise;
