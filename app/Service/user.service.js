@@ -2,6 +2,7 @@ const config = require('../db.config.json');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
+const fs = require("fs");
 
 
 module.exports = {
@@ -35,34 +36,39 @@ async function getById(id) {
     return await getUser(id);
 }
 
-async function create(params) {
-    console.log("param",params)
+async function create(userInfo) {
+    // Valider les entrées de l'utilisateur
+    // ...
 
-    // validate
-    if (await db.User.findOne({where: {email: params.email}})) {
-        throw 'Username "' + params.email + '" is already taken';
+    // Vérifier si un utilisateur avec la même adresse e-mail existe déjà
+    const existingUser = await db.User.findOne({ where: { email: userInfo.email } });
+    if (existingUser) {
+        throw new Error(`Un utilisateur avec l'adresse e-mail ${userInfo.email} existe déjà`);
     }
 
-    // hash password
-    if (params.password) {
-        params.password = await bcrypt.hash(params.password, 10);
-    }
+    // Hasher le mot de passe
+    const hashedPassword = await bcrypt.hash(userInfo.password, 10);
 
+    // // Lire l'image téléchargée par l'utilisateur et la convertir en données binaires
+    // const avatar = await fs.promises.readFile(userInfo.avatarUrl);
+    // console.log(avatar)
+    // console.log(userInfo.avatarUrl)
+
+    // Créer l'utilisateur dans la base de données
     const user = await db.User.create({
-        title:params.title,
-        firstName:params.firstName,
-        lastName:params.lastName,
-        role:params.role,
-        email:params.email,
-        password:params.password,
-        AdresseId:params.AdresseId,
-        EntrepriseId:params.EntrepriseId,
-        avatarUrl: params.avatarUrl
+        title: userInfo.title,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        role: userInfo.role,
+        email: userInfo.email,
+        password: hashedPassword,
+        AdresseId: userInfo.AdresseId,
+        EntrepriseId: userInfo.EntrepriseId,
+        avatarUrl: userInfo.avatarUrl
     });
 
-    await user.addEntreprise(params.EntrepriseId);
-
-
+    // Ajouter la relation avec l'entreprise
+    await user.addEntreprise(userInfo.EntrepriseId);
 }
 
 
@@ -75,24 +81,18 @@ async function update(id, params) {
         throw 'Username "' + params.email + '" is already taken';
     }
 
-    // hash password if it was entered
-    if (params.password) {
+    // Hash du mot de passe s'il a été modifié
+    if (params.password && params.password !== user.password) {
         params.password = await bcrypt.hash(params.password, 10);
+    } else {
+        // Copie de la valeur existante du mot de passe
+        params.password = user.password;
     }
+
 
     // copy params to user and save
     Object.assign(user, params);
     console.log(params);
-    let userId =  user.getDataValue('id');
-    let entrepriseId =  user.getDataValue('EntrepriseId')
-    // console.log("user: " + user.getDataValue('id'))
-    console.log("userId: " + user.id);
-    console.log("entrepriseId: " + user.EntrepriseId);
-    await db.UserEntreprise.create({
-        UserId:  user.id,
-        EntrepriseId: params.EntrepriseId
-    });
-
 
     // copy params to user and save
     await user.save();

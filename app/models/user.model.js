@@ -11,7 +11,7 @@ function model(sequelize) {
         email: { type: DataTypes.STRING, allowNull: false },
         password: { type: DataTypes.STRING, allowNull: false },
         avatarUrl: {
-            type: DataTypes.BLOB,    maxLength: 5 * 1024 * 1024, // 5 Mo
+            type: DataTypes.STRING,   // maxLength: 5 * 1024 * 1024, // 5 Mo if BLOB
 
         },
         AdresseId: { type: DataTypes.INTEGER},

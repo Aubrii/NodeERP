@@ -88,7 +88,7 @@ function createSchema(req, res, next) {
         role: Joi.string().valid(Role.Admin, Role.Users,Role.SuperAdmin).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
-        avatarUrl:Joi.binary(),
+        avatarUrl:Joi.string(),
         EntrepriseId: Joi.number(),
         Adresse:{
             adresses:Joi.string(),
@@ -131,7 +131,7 @@ function updateSchema(req, res, next) {
         role: Joi.string().valid(Role.Admin, Role.Users,Role.SuperAdmin).empty(''),
         email: Joi.string().email().empty(''),
         password: Joi.string().min(6).empty(''),
-        avatarUrl:Joi.binary(),
+        avatarUrl:Joi.string(),
         AdresseId: Joi.number(),
         EntrepriseId: Joi.number(),
 
