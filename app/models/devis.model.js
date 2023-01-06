@@ -9,7 +9,6 @@ function model(sequelize) {
         ClientId: {type:DataTypes.INTEGER},
         EntrepriseId: {type:DataTypes.INTEGER},
         UserId: {type:DataTypes.INTEGER},
-        LotId: {type:DataTypes.INTEGER}
     };
 
     return sequelize.define('Devis', attributes);

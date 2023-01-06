@@ -7,7 +7,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+
 };
 
 async function getAll() {
@@ -50,14 +51,65 @@ async function getLot(id) {
 }
 
 
-async function create(params) {
-    //validate
-    if (await db.Lot.findOne({ where: { designation: params.designation } })) {
-        throw 'designation "' + params.designation + '" est deja enregistrer';
-    }
-    const lot = new db.Lot(params);
 
-    // save client
-    await lot.save();
+async function create(params) {
+// Validate
+    if (await db.Lot.findOne({ where: { designation: params.designation } })) {
+        throw 'Designation "' + params.designation + '" est déjà enregistrée';
+    }
+
+// Create lot
+    console.log(params)
+    const [lot] = await db.Lot.findOrCreate({
+        where: { designation: params.designation },
+        defaults: params,
+        returning: true // <-- Indique à Sequelize de retourner les données du lot créé
+    });
+
+// Get lot ID
+    const lotId = lot.getDataValue('id');
+    console.log("lotid=>lot.service",lotId)
+    const devisId = params.devisId;
+
+// Add relation to Devis table
+    const devis = await db.Devis.findByPk(devisId);
+    await devis.addLot(lot);
+
+// Set lot ID on sous-lot model
+    module.exports.lotId = lotId;
+
+// Return lot
+    return { lot: lot, lotId: lotId };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

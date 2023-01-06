@@ -10,13 +10,18 @@ router.get('/', getAll);
 router.get('/isFraisDeChantiers', getAllFraisDeChantiers);
 router.get('/:id', getById);
 router.post('/new', createSchema, create);
+router.post('/sousLot',createSousLotOuvrage);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 
 module.exports = router;
 
-
-
+function createSousLotOuvrage(req, res, next)
+{
+    ouvrageService.createSousLotOuvrage(req.body)
+        .then(ouvrage=>res.send(ouvrage))
+        .catch(next)
+}
 function getAll(req, res, next) {
     ouvrageService.getAll(req.query.EntrepriseId)
         .then(ouvrage => res.json(ouvrage))

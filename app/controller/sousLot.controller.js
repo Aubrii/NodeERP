@@ -3,11 +3,12 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const  sousLotService = require('../Service/sousLot.service')
+const {lotId} = require("../Service/lot.service");
 
 
 router.get('/', getAll);
 router.get('/:id', getById);
-router.post('/new', createSchema, create);
+router.post('/new/:id', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
 
@@ -27,7 +28,8 @@ function getById(req, res, next) {
         .catch(next);
 }
 function create(req, res, next) {
-    sousLotService.create(req.body)
+    console.log("REQ",req.params.id)
+    sousLotService.create(req.body,req.params.id)
         .then(sousLot => res.send({
             message: 'sousLot créer',
             sousLot: sousLot

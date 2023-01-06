@@ -21,6 +21,7 @@ function getAll(req, res, next) {
         .catch(next);
 }
 
+
 function getById(req, res, next) {
     lotService.getById(req.params.id)
         .then(lot => res.json(lot))
@@ -28,11 +29,13 @@ function getById(req, res, next) {
 }
 function create(req, res, next) {
     lotService.create(req.body)
-        .then(() => res.send({
+        .then((lot) => res.send({
+
             message: 'lot créer',
-            lot: req.body
+            lot: lot
         }))
         .catch(next);
+    // console.log("response.send",lot)
 }
 
 function update(req, res, next) {
@@ -55,6 +58,8 @@ function _delete(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
+        id: Joi.number(),
+        devisId : Joi.number(),
         designation: Joi.string(),
         SousLotId:Joi.number()
     });

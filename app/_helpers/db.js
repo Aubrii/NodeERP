@@ -90,20 +90,20 @@ async function initialize() {
     db.CoutDuDevis.hasOne(db.Cout);
 
     // Relation between Ouvrage and SousLot => Many to many
-    db.Ouvrage.belongsToMany(db.SousLot, {through: db.SousLotOuvrage});
-    db.SousLot.belongsToMany(db.Ouvrage, {through: db.SousLotOuvrage});
+    db.Ouvrage.belongsToMany(db.SousLot, {through: db.SousLotOuvrage,onDelete: 'CASCADE'});
+    db.SousLot.belongsToMany(db.Ouvrage, {through: db.SousLotOuvrage,onDelete: 'CASCADE'});
 
     //Relation between Devis and User  => Many to many
     db.Devis.belongsToMany(db.User,{through: db.UserDevis});
     db.User.belongsToMany(db.Devis,{through:db.UserDevis});
 
     //Relation between SousLot and Lot  => One to many
-    db.Lot.belongsToMany(db.SousLot,{through: db.LotSoutLot});
-    db.SousLot.belongsToMany(db.Lot,{through:db.LotSoutLot});
+    db.Lot.belongsToMany(db.SousLot,{through: db.LotSoutLot, onDelete: 'CASCADE'});
+    db.SousLot.belongsToMany(db.Lot,{through:db.LotSoutLot, onDelete: 'CASCADE'});
 
     //Relation between Lot and Devis  => One to many
-    db.Lot.hasMany(db.Devis);
-    db.Devis.belongsTo(db.Lot, {foreignKey: "LotId"});
+    db.Lot.belongsTo(db.Devis,{ onDelete: 'CASCADE'});
+    db.Devis.belongsToMany(db.Lot, {through: 'LotDevis',onDelete: 'CASCADE'});
 
     // sync all models with database
 

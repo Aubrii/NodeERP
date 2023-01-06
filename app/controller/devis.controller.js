@@ -4,6 +4,7 @@ const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const  DevisService = require('../Service/devis.service')
 const {DataTypes} = require("sequelize");
+const lotService = require("../Service/lot.service");
 
 // routes
 
@@ -11,6 +12,7 @@ router.get('/',  getAll);
 router.get('/byClient/:id', getDevisByClient);
 router.get('/byUser/:id', getDevisByUser);
 router.get('/:id', getById);
+// router.get('/:id', getLotSublot);
 router.post('/new', createSchema, create);
 router.put('/:id', updateSchema, update);
 router.delete('/:id', _delete);
@@ -27,6 +29,12 @@ function getById(req, res, next){
 
 function getAll(req, res, next) {
     DevisService.getAll()
+        .then(devis => res.json(devis))
+        .catch(next);
+}
+
+function getLotSublot(req, res, next) {
+    DevisService.getLotSublot(req.params.id)
         .then(devis => res.json(devis))
         .catch(next);
 }

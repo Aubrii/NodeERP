@@ -47,11 +47,14 @@ async function getOuvragePriceById(id) {
                 include: [
                     {
                         model: db.Ouvrage,
+                        where: { id: id },
+
                     },
                 ],
             },
         ],
-        group: ['Ouvrage.id'],
+        // group: ['Ouvrage.id'],
+
     });
         return sommeCouts;
 }

@@ -9,7 +9,8 @@ module.exports = {
     update,
     delete: _delete,
     getAllPrice,
-    getAllFraisDeChantiers
+    getAllFraisDeChantiers,
+    createSousLotOuvrage
 };
 
 async function getAll(entrepriseId) {
@@ -36,7 +37,7 @@ async function getAllPrice() {
                 ],
             },
         ],
-        group: ['Ouvrage.id'],
+        //group: ['Ouvrage.id'],
     });
     console.log("ouvrage service getAllPrice :", ouvrages); // affiche le prix total de chaque ouvrage sous forme d'objet avec l'id et le prix total
 
@@ -89,5 +90,13 @@ async function create(params) {
 
     // save client
     await ouvrage.save();
+
+}
+async function createSousLotOuvrage(data,idOuvrage, idSousLot) {
+    console.log("ouvrageId",data.ouvrageId, "sousLotId",data.sousLotId);
+
+    const ouvrage = await db.Ouvrage.findByPk(data.ouvrageId);
+    const sousLot = await db.SousLot.findByPk(data.sousLotId);
+    await ouvrage.addSousLot(sousLot);
 
 }

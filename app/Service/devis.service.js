@@ -1,9 +1,11 @@
 const db = require('../_helpers/db');
+const {logger} = require("sequelize/lib/utils/logger");
 
 module.exports = {
     getAll,
     create,
     update,
+    getLotSublot,
     getDevisByClient,
     getDevisByUser,
     delete:_delete,
@@ -15,10 +17,53 @@ async function getAll() {
     return await db.Devis.findAll({ include: [db.Client,db.User, db.Lot] });
 }
 async function getById(id) {
-    return await db.Devis.findByPk(id,{ include: [db.Client,db.User, db.Lot,db.Entreprise] });
+    return await db.Devis.findByPk(id, {
+        include: [
+            db.Client,
+            db.User,
+            {
+                model: db.Lot,
+                include: [
+                    {
+                        model: db.SousLot,
+                        include: [
+                            {
+                                model: db.Ouvrage,
+                                include: [
+                                    {
+                                        model: db.CoutDuDevis,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    });
 }
 
+async function getLotSublot(id){
+    return await db.Devis.findByPk(id,{
+        where: { id: devisId },
+        include: [
+            {
+                model: db.Lot,
+                include: [
+                    {
+                        model: db.SousLot,
+                        include: [
+                            {
+                                model: db.Ouvrage,
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    });
 
+}
 
 async function getDevisByClient(clientId) {
     return await db.Client.findByPk(clientId, { include: ["devis"] })

@@ -74,7 +74,6 @@ async function create(userInfo) {
 
 async function update(id, params) {
     const user = await getUser(id);
-//TODO: VOIR LA METHODE POUR UPDATE
     // validate
     const usernameChanged = params.email && user.email !== params.email;
     if (usernameChanged && await db.User.findOne({ where: { email: params.email } })) {
