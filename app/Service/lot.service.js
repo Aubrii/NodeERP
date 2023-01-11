@@ -3,6 +3,7 @@ const {where} = require("sequelize");
 
 
 module.exports = {
+    getFraisDeChantier,
     getAll,
     getById,
     create,
@@ -16,6 +17,18 @@ async function getAll() {
         include: [db.Devis, db.SousLot]
 
     })
+}
+async function getFraisDeChantier(deviId) {
+
+    const lot = await db.Lot.findOne({
+        include:[db.Devis, db.SousLot],
+        where:{designation : "Frais de chantier"}
+    })
+    return lot;
+
+    // return await db.LotDevis.findOne({
+    //     where:{DeviId: deviId,LotId : lot.id }
+    // })
 }
 
 async function getById(id) {
@@ -54,9 +67,9 @@ async function getLot(id) {
 
 async function create(params) {
 // Validate
-    if (await db.Lot.findOne({ where: { designation: params.designation } })) {
-        throw 'Designation "' + params.designation + '" est déjà enregistrée';
-    }
+//     if (await db.Lot.findOne({ where: { designation: params.designation } })) {
+//         throw 'Designation "' + params.designation + '" est déjà enregistrée';
+//     }
 
 // Create lot
     console.log(params)
@@ -65,7 +78,7 @@ async function create(params) {
         defaults: params,
         returning: true // <-- Indique à Sequelize de retourner les données du lot créé
     });
-
+console.log("LOT", lot)
 // Get lot ID
     const lotId = lot.getDataValue('id');
     console.log("lotid=>lot.service",lotId)

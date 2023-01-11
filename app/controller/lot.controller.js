@@ -3,8 +3,9 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const lotService = require('../Service/lot.service')
+const coutService = require("../Service/cout.service");
 
-
+router.get('/fraisDeChantier', getFraisDeChantier)
 router.get('/', getAll);
 router.get('/:id', getById);
 router.post('/new', createSchema, create);
@@ -13,7 +14,11 @@ router.delete('/:id', _delete);
 
 module.exports = router;
 
-
+function getFraisDeChantier(req, res, next) {
+    lotService.getFraisDeChantier(req.query.DeviId)
+        .then(cout => res.json(cout))
+        .catch(next);
+}
 
 function getAll(req, res, next) {
     lotService.getAll()

@@ -9,6 +9,7 @@ const lotService = require("../Service/lot.service");
 // routes
 
 router.get('/',  getAll);
+router.get('/exceptFrais/:id',  getByIdExceptFrais);
 router.get('/byClient/:id', getDevisByClient);
 router.get('/byUser/:id', getDevisByUser);
 router.get('/:id', getById);
@@ -23,6 +24,11 @@ module.exports = router;
 
 function getById(req, res, next){
     DevisService.getById(req.params.id)
+        .then(devis => res.json(devis))
+        .catch(next)
+}
+function getByIdExceptFrais(req, res, next){
+    DevisService.getAllLotExceptFraisDeChantier(req.params.id)
         .then(devis => res.json(devis))
         .catch(next)
 }

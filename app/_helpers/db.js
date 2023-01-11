@@ -102,7 +102,7 @@ async function initialize() {
     db.SousLot.belongsToMany(db.Lot,{through:db.LotSoutLot, onDelete: 'CASCADE'});
 
     //Relation between Lot and Devis  => One to many
-    db.Lot.belongsTo(db.Devis,{ onDelete: 'CASCADE'});
+    db.Lot.belongsToMany(db.Devis,{ through: 'LotDevis', onDelete: 'CASCADE'});
     db.Devis.belongsToMany(db.Lot, {through: 'LotDevis',onDelete: 'CASCADE'});
 
     // sync all models with database

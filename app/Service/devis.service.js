@@ -1,5 +1,6 @@
 const db = require('../_helpers/db');
 const {logger} = require("sequelize/lib/utils/logger");
+const {Sequelize} = require("sequelize");
 
 module.exports = {
     getAll,
@@ -9,7 +10,8 @@ module.exports = {
     getDevisByClient,
     getDevisByUser,
     delete:_delete,
-    getById
+    getById,
+    getAllLotExceptFraisDeChantier
 };
 
 //Récuperation de toute les données Devis Entreprise Client
@@ -42,6 +44,40 @@ async function getById(id) {
         ],
     });
 }
+
+
+async function getAllLotExceptFraisDeChantier(id){
+    return await db.Devis.findByPk(id, {
+        include: [
+            db.Client,
+            db.User,
+            {
+                model: db.Lot,
+                where: {
+                    designation: {
+                        [Sequelize.Op.ne]: 'Frais de chantier'
+                    }
+                },
+                include: [
+                    {
+                        model: db.SousLot,
+                        include: [
+                            {
+                                model: db.Ouvrage,
+                                include: [
+                                    {
+                                        model: db.CoutDuDevis,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    });
+}
+
 
 async function getLotSublot(id){
     return await db.Devis.findByPk(id,{
